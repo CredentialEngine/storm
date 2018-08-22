@@ -1,0 +1,120 @@
+/*BASIC*/
+
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    background: #eee;
+}
+
+
+/*HEADER*/
+
+.header {
+    height: 25px;
+    background: #222;
+    color: #eee;
+    text-align: center;
+    font: 10px/25px Helvetica, Verdana, sans-serif;
+}
+
+.header a {
+    color: #999;
+}
+
+
+/*LIST*/
+
+ul {
+    list-style: none;
+}
+
+
+/*FORM*/
+
+form {
+    margin: 50px;
+}
+
+input {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+
+label {
+    display: block;
+    height: 650px;
+    width: 50px;
+    background: #999;
+    text-align: center;
+    font: 14px/50px Helvetica, Verdana, sans-serif;
+    margin-bottom: 10px;
+    float: left;
+    overflow: hidden;
+    -webkit-transition: width 1s ease, background 0.5s ease;
+    -moz-transition: width 1s ease, background 0.5s ease;
+    -o-transition: width 1s ease, background 0.5s ease;
+    -ms-transition: width 1s ease, background 0.5s ease;
+    transition: width 1s ease, background 0.5s ease;
+}
+
+.vertical {
+    transform: rotate(-90deg);
+}
+
+#rad2+label {
+    background: #888;
+    -webkit-transition: width 1s ease, background 0.5s ease;
+    -moz-transition: width 1s ease, background 0.5s ease;
+    -o-transition: width 1s ease, background 0.5s ease;
+    -ms-transition: width 1s ease, background 0.5s ease;
+    transition: width 1s ease, background 0.5s ease;
+}
+
+label:hover,
+#rad2+label:hover {
+    background: #232323;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+/*SLIDES*/
+
+.accslide {
+    color: #333;
+    display: block;
+    height: 650px;
+    width: 0px;
+    background: #fff;
+    font: 12px/1.5 Helvetica, Verdana, sans-serif;
+    padding: 10px 0;
+    float: left;
+    overflow: hidden;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    transition: all 1s ease;
+}
+
+.accslide p,
+h2,
+img {
+    width: 800px;
+    padding-left: 10px;
+}
+
+.accslide img {
+    margin-top: 10px;
+}
+
+input[type="radio"]:checked+label~.accslide {
+    width: 800px;
+}
