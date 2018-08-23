@@ -5,37 +5,58 @@
     <meta charset=utf-8 />
     <meta name="description" content="STORM method for conversion of Product Data to Learning Objectives and Learning Course Structure">
     <title>STORM</title>
+    <script src="https://unpkg.com/lodash@4.16.6"></script>
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
 </head>
 
 <body>
     <div class="header">
-        <h1>STORM</h1>
+        <h1>STORM Conversion Toolbox</h1>
     </div>
     <select id="selectedServer">
-        <option disabled selected value="">Select Server</option>
+        <option disabled selected value="http://nowhere/">Select Server</option>
         <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
         <option value="http://localhost:8080/api/">Localhost</option>
     </select>
     <p></p>
-    <form>
+    <center>
         <ul>
             <li>
                 <input id="rad1" type="radio" name="rad">
-                <label for="rad1"><a class="vertical">1</a></label>
+                <label for="rad1"><a class="vertical">Import</a></label>
                 <div class="accslide">
-                    <h2>Slide 1</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/1" alt="">
+                    <h2>Import 0007 XML</h2>
+                    <p>This step imports a 0007 XML file and transforms it into linked data.</p>
+                    <input id="0007Input" type="file" /><button id="0007Import">Import</button>
+                    <hr>
+                    <h2>Import S3000L XML</h2>
+                    <p>This step imports a S3000L XML file and transforms it into linked data.</p>
+                    <input type="file" /><button>Import</button>
+                    <hr>
+                    <div id="rad1Progress">
+                        <h2>Import Progress</h2>
+                        <p>Progress is shown here.</p>
+                        <progress id="importParseProgress" value="0" max="0"></progress> <span id="importParseText">0</span> of <span id="importParseTextMax">0</span> elements parsed.<br>
+                        <progress id="importUploadProgress" value="0" max="0"></progress> <span id="importUploadText">0</span> of <span id="importUploadTextMax">0</span> linked data objects uploaded.<br>
+                    </div>
                 </div>
             </li>
             <li>
                 <input id="rad2" type="radio" name="rad">
-                <label for="rad2"><a class="vertical">2</a></label>
+                <label for="rad2"><a class="vertical">View Linked Data</a></label>
                 <div class="accslide">
-                    <h2>Slide 2</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/2" alt="">
+                    <h2>View .</h2>
+                    <p>This step augments data with definitions taken from vocabularies.</p>
+                    <button>Go</button>
+                </div>
+            </li>
+            <li>
+                <input id="rad3" type="radio" name="rad">
+                <label for="rad3"><a class="vertical">Augment</a></label>
+                <div class="accslide">
+                    <h2>Augment data with definitions.</h2>
+                    <p>This step augments data with definitions taken from vocabularies.</p>
+                    <button>Go</button>
                 </div>
             </li>
             <li>
@@ -48,8 +69,8 @@
                 </div>
             </li>
             <li>
-                <input id="rad3" type="radio" name="rad">
-                <label for="rad3"><a class="vertical">3</a></label>
+                <input id="rad4" type="radio" name="rad">
+                <label for="rad4"><a class="vertical">4</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
@@ -57,8 +78,8 @@
                 </div>
             </li>
             <li>
-                <input id="rad3" type="radio" name="rad">
-                <label for="rad3"><a class="vertical">3</a></label>
+                <input id="rad5" type="radio" name="rad">
+                <label for="rad5"><a class="vertical">5</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
@@ -66,8 +87,8 @@
                 </div>
             </li>
             <li>
-                <input id="rad3" type="radio" name="rad">
-                <label for="rad3"><a class="vertical">3</a></label>
+                <input id="rad6" type="radio" name="rad">
+                <label for="rad6"><a class="vertical">6</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
@@ -75,7 +96,11 @@
                 </div>
             </li>
         </ul>
-    </form>
+    </center>
+    <script src="dist/main.js"></script>
+    <script src="dist/cass.js"></script>
+    <script src="dist/import.js"></script>
+    <script src="dist/upload.js"></script>
 </body>
 
 </html>
