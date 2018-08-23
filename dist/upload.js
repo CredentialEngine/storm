@@ -62,14 +62,8 @@ var upload = function (data) {
         if (targetUniqueCount == 1)
             return true;
         if (EcObject.keys(samples).length < targetUniqueCount) {
-            console.log(EcObject.keys(samples).length);
-            console.log(targetUniqueCount);
-            console.log("-");
             return true; //We have reached distinction.
         }
-        console.log(EcObject.keys(samples).length);
-        console.log(targetUniqueCount);
-        console.log("-");
         return false;
     }
 
@@ -86,24 +80,24 @@ var upload = function (data) {
     var saveThing = function (thing) {
         Task.asyncImmediate(function (con) {
             if (repo.selectedServer == "http://nowhere/") {
-                setTimeout(con, 30);
                 var val = parseInt($("#importUploadProgress").attr("value"));
                 $("#importUploadProgress").attr("value", val + 1);
                 $("#importUploadText").text(val);
+                setTimeout(con, 30);
             } else {
                 repo.saveTo(thing, function (success) {
-                    //console.log(thing.id);
-                    con();
                     var val = parseInt($("#importUploadProgress").attr("value"));
                     $("#importUploadProgress").attr("value", val + 1);
                     $("#importUploadText").text(val);
+                    //console.log(thing.id);
+                    con();
                 }, function (error) {
                     console.log(thing.id);
                     console.log(error);
-                    con();
                     var val = parseInt($("#importUploadProgress").attr("value"));
                     $("#importUploadProgress").attr("value", val + 1);
                     $("#importUploadText").text(val);
+                    con();
                 });
             }
         });

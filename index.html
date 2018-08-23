@@ -11,9 +11,9 @@
 
 <body>
     <select id="selectedServer" style="float:left;">
-        <option disabled selected value="http://nowhere/">Select Server</option>
+        <option disabled  value="http://nowhere/">Select Server</option>
         <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
-        <option value="http://localhost:8080/api/">Localhost</option>
+        <option selected value="http://localhost:8080/api/">Localhost</option>
     </select>
     <div class="header">
         <h1>STORM Conversion Toolbox</h1>
@@ -51,17 +51,32 @@
                 <input id="rad2" type="radio" name="rad">
                 <label for="rad2"><a class="vertical">Step 2<br><br>View<br>Linked<br>Product Data</a></label>
                 <div class="accslide">
-                    <iframe width="500px" style="float:right;margin-right:10px;"></iframe>
-                    <h2>View Linked Data.</h2>
-                    <p>This step augments data with definitions taken from vocabularies.</p>
-                    <button>Go</button>
+                    <center>
+                        <h1>Step 2: View Linked Product Data</h1>
+                        <hr>
+                    </center>
+                    <p>Here, we can see the output of step 1. The product data has been parsed, made linkable, and placed in a search engine.</p>
+                    <button id="viewLinkedDataSearch">Search for Products</button>
                     <hr>
-                    <h3>Products</h3>
-                    <p id="productCheckboxes">
-                        <input type="checkbox">Product 1<br>
-                        <input type="checkbox">Product 2<br>
-                        <input type="checkbox">Product 3<br>
-                    </p>
+                    <div id="viewLinkedDAtaQrCodeCanvas" style="float:right;width:192px;height:192px;margin-right:10px;"></div>
+                    <h2>Products</h2>
+                    <select id="viewLinkedDataProducts">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewLinkedDataProductsFeedback">0 results found.</span>
+                    <h2>Components and Subcomponents</h2>
+                    <select id="viewLinkedDataComponents">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewLinkedDataComponentsFeedback">0 results found.</span>
+                    <h2>Tasks</h2>
+                    <select id="viewLinkedDataTasks">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewLinkedDataTasksFeedback">0 results found.</span>
+                    <h2>Subtasks</h2>
+                    <select id="viewLinkedDataSubtasks">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewLinkedDataSubtasksFeedback">0 results found.</span>
+                    <hr>
+                    <pre id="viewLinkedDataIframe" style=""></pre>
                 </div>
             </li>
             <li>
@@ -139,9 +154,12 @@
         </ul>
     </div>
     <script src="dist/main.js"></script>
+    <script src="src/qrcode.js"></script>
+    <script src="src/jquery.qrcode.js"></script>
     <script src="dist/cass.js"></script>
     <script src="dist/import.js"></script>
     <script src="dist/upload.js"></script>
+    <script src="dist/viewLinkedData.js"></script>
 </body>
 
 </html>
