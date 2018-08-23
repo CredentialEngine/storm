@@ -8,6 +8,10 @@
 
 body {
     background: #eee;
+    background-image: url("https://images.pexels.com/photos/12598/96917deb7705adcee76b65caf8c652b1.jpg?cs=srgb&dl=toolbox-tools-wrenches-12598.jpg&fm=jpg");
+    background-repeat-y: no-repeat;
+    background-repeat-x: no-repeat;
+    background-size: cover;
 }
 
 
@@ -29,6 +33,7 @@ hr {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
 
 /*LIST*/
 
@@ -52,11 +57,13 @@ input[type='radio'] {
 label {
     display: block;
     height: 650px;
-    width: 60px;
+    width: 80px;
+    color: #000;
     background: #999;
     text-align: center;
     font: 14px/16px Helvetica, Verdana, sans-serif;
     margin-bottom: 10px;
+    padding: 5px;
     float: left;
     overflow: hidden;
     -webkit-transition: width 1s ease, background 0.5s ease;
@@ -66,12 +73,20 @@ label {
     transition: width 1s ease, background 0.5s ease;
 }
 
+#container {
+    margin-left: 20px;
+}
+
 label a {
     padding-top: 30px;
     display: block;
 }
 
-#rad2 + label {
+#rad2+label,
+#rad4+label,
+#rad6+label,
+#rad8+label,
+#rad10+label {
     background: #888;
     -webkit-transition: width 1s ease, background 0.5s ease;
     -moz-transition: width 1s ease, background 0.5s ease;
@@ -81,7 +96,11 @@ label a {
 }
 
 label:hover,
-#rad2 + label:hover {
+#rad2+label:hover,
+#rad4+label:hover,
+#rad6+label:hover,
+#rad8+label:hover,
+#rad10+label:hover {
     background: #232323;
     color: #fff;
     cursor: pointer;
@@ -90,6 +109,7 @@ label:hover,
 button {
     padding: 5px;
 }
+
 
 /*SLIDES*/
 
@@ -112,15 +132,23 @@ button {
 
 .accslide p,
 h2,
+h3,
+h4,
 img {
-    width: calc(100vw - 520px);
+    width: calc(100vw - 760px);
     padding-left: 10px;
+}
+
+.accslide input,
+button,
+progress {
+    margin-left: 10px;
 }
 
 .accslide img {
     margin-top: 10px;
 }
 
-input[type="radio"]:checked + label ~ .accslide {
-    width: calc(100vw - 520px);
+input[type="radio"]:checked+label~.accslide {
+    width: calc(100vw - 840px);
 }

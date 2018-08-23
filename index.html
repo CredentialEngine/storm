@@ -10,21 +10,27 @@
 </head>
 
 <body>
-    <div class="header">
-        <h1>STORM Conversion Toolbox</h1>
-    </div>
-    <select id="selectedServer">
+    <select id="selectedServer" style="float:left;">
         <option disabled selected value="http://nowhere/">Select Server</option>
         <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
         <option value="http://localhost:8080/api/">Localhost</option>
     </select>
-    <p></p>
-    <div>
+    <div class="header">
+        <h1>STORM Conversion Toolbox</h1>
+    </div>
+    <p></p><br>
+    <div id="container">
         <ul>
             <li>
                 <input id="rad1" type="radio" name="rad">
-                <label for="rad1"><a class="vertical">Import</a></label>
+                <label for="rad1"><a class="vertical">Step 1<br><br>Import<br>0007<br>or<br>S3000L</a></label>
                 <div class="accslide">
+                    <center>
+                        <h1>Step 1: Import 0007 or S3000L Data</h1>
+                        <hr>
+                    </center>
+                    PICTURE GOES HERE.
+                    <hr>
                     <h2>Import 0007 XML</h2>
                     <p>This step imports a 0007 XML file and transforms it into linked data.</p>
                     <input id="0007Input" type="file" /><button id="0007Import">Import</button>
@@ -43,34 +49,33 @@
             </li>
             <li>
                 <input id="rad2" type="radio" name="rad">
-                <label for="rad2"><a class="vertical">View Linked Data</a></label>
+                <label for="rad2"><a class="vertical">Step 2<br><br>View<br>Linked<br>Product Data</a></label>
                 <div class="accslide">
-                    <h2>View .</h2>
+                    <iframe width="500px" style="float:right;margin-right:10px;"></iframe>
+                    <h2>View Linked Data.</h2>
                     <p>This step augments data with definitions taken from vocabularies.</p>
                     <button>Go</button>
+                    <hr>
+                    <h3>Products</h3>
+                    <p id="productCheckboxes">
+                        <input type="checkbox">Product 1<br>
+                        <input type="checkbox">Product 2<br>
+                        <input type="checkbox">Product 3<br>
+                    </p>
                 </div>
             </li>
             <li>
                 <input id="rad3" type="radio" name="rad">
-                <label for="rad3"><a class="vertical">Augment</a></label>
+                <label for="rad3"><a class="vertical">Step 3<br><br>Expand Product Data</a></label>
                 <div class="accslide">
-                    <h2>Augment data with definitions.</h2>
-                    <p>This step augments data with definitions taken from vocabularies.</p>
+                    <h2>Expand data with Concept Schemes.</h2>
+                    <p>This step expanded data with definitions taken from vocabularies.</p>
                     <button>Go</button>
-                </div>
-            </li>
-            <li>
-                <input id="rad3" type="radio" name="rad">
-                <label for="rad3"><a class="vertical">3</a></label>
-                <div class="accslide">
-                    <h2>Slide 3</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
             <li>
                 <input id="rad4" type="radio" name="rad">
-                <label for="rad4"><a class="vertical">4</a></label>
+                <label for="rad4"><a class="vertical">Step 4<br><br>View Expanded Product Data</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
@@ -79,7 +84,7 @@
             </li>
             <li>
                 <input id="rad5" type="radio" name="rad">
-                <label for="rad5"><a class="vertical">5</a></label>
+                <label for="rad5"><a class="vertical">Step 5<br><br>Convert Product Data to CTDL/ASN</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
@@ -88,7 +93,43 @@
             </li>
             <li>
                 <input id="rad6" type="radio" name="rad">
-                <label for="rad6"><a class="vertical">6</a></label>
+                <label for="rad6"><a class="vertical">Step 6<br><br>View Conversion Process</a></label>
+                <div class="accslide">
+                    <h2>Slide 3</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
+                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                </div>
+            </li>
+            <li>
+                <input id="rad7" type="radio" name="rad">
+                <label for="rad7"><a class="vertical">Step 7<br><br>View AI/NLP Method for writing TLOs/ELOs</a></label>
+                <div class="accslide">
+                    <h2>Slide 3</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
+                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                </div>
+            </li>
+            <li>
+                <input id="rad8" type="radio" name="rad">
+                <label for="rad8"><a class="vertical">Step 8<br><br>View Competency Framework</a></label>
+                <div class="accslide">
+                    <h2>Slide 3</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
+                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                </div>
+            </li>
+            <li>
+                <input id="rad9" type="radio" name="rad">
+                <label for="rad9"><a class="vertical">Step 9<br><br>View CTDL/ASN</a></label>
+                <div class="accslide">
+                    <h2>Slide 3</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
+                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                </div>
+            </li>
+            <li>
+                <input id="rad10" type="radio" name="rad">
+                <label for="rad10"><a class="vertical">Step 10<br><br>Export S1000D</a></label>
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
