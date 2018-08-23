@@ -8,6 +8,10 @@
 
 body {
     background: #eee;
+    background-image: url("https://images.pexels.com/photos/12598/96917deb7705adcee76b65caf8c652b1.jpg?cs=srgb&dl=toolbox-tools-wrenches-12598.jpg&fm=jpg");
+    background-repeat-y: no-repeat;
+    background-repeat-x: no-repeat;
+    background-size: cover;
 }
 
 
@@ -30,6 +34,7 @@ hr {
     margin-bottom: 10px;
 }
 
+
 /*LIST*/
 
 ul {
@@ -49,14 +54,28 @@ input[type='radio'] {
     left: -9999px;
 }
 
+#container {
+    padding-left: 20px;
+    background-color: rgba(128, 128, 128, .8);
+    height: calc(100vh - 25px);
+    width: calc(100vw);
+}
+
+label a {
+    padding-top: 30px;
+    display: block;
+}
+
 label {
     display: block;
-    height: 650px;
-    width: 60px;
-    background: #999;
+    height: calc(100vh - 25px - 40px);
+    width: 80px;
+    color: #fff;
+    background: rgba(0, 0, 0, .8);
     text-align: center;
     font: 14px/16px Helvetica, Verdana, sans-serif;
     margin-bottom: 10px;
+    padding: 5px;
     float: left;
     overflow: hidden;
     -webkit-transition: width 1s ease, background 0.5s ease;
@@ -66,13 +85,12 @@ label {
     transition: width 1s ease, background 0.5s ease;
 }
 
-label a {
-    padding-top: 30px;
-    display: block;
-}
-
-#rad2 + label {
-    background: #888;
+#rad2+label,
+#rad4+label,
+#rad6+label,
+#rad8+label,
+#rad10+label {
+    background: rgba(0, 0, 0, .7);
     -webkit-transition: width 1s ease, background 0.5s ease;
     -moz-transition: width 1s ease, background 0.5s ease;
     -o-transition: width 1s ease, background 0.5s ease;
@@ -81,7 +99,11 @@ label a {
 }
 
 label:hover,
-#rad2 + label:hover {
+#rad2+label:hover,
+#rad4+label:hover,
+#rad6+label:hover,
+#rad8+label:hover,
+#rad10+label:hover {
     background: #232323;
     color: #fff;
     cursor: pointer;
@@ -91,12 +113,13 @@ button {
     padding: 5px;
 }
 
+
 /*SLIDES*/
 
 .accslide {
     color: #333;
     display: block;
-    height: 650px;
+    height: calc(100vh - 25px - 40px);
     width: 0px;
     background: #fff;
     font: 12px/1.5 Helvetica, Verdana, sans-serif;
@@ -112,15 +135,23 @@ button {
 
 .accslide p,
 h2,
+h3,
+h4,
 img {
-    width: calc(100vw - 520px);
+    width: calc(100vw - 760px);
     padding-left: 10px;
+}
+
+.accslide input,
+button,
+progress {
+    margin-left: 10px;
 }
 
 .accslide img {
     margin-top: 10px;
 }
 
-input[type="radio"]:checked + label ~ .accslide {
-    width: calc(100vw - 520px);
+input[type="radio"]:checked+label~.accslide {
+    width: calc(100vw - 840px);
 }

@@ -84,14 +84,13 @@ var upload = function (data) {
     }
 
     var saveThing = function (thing) {
-
         Task.asyncImmediate(function (con) {
             if (repo.selectedServer == "http://nowhere/") {
                 setTimeout(con, 30);
                 var val = parseInt($("#importUploadProgress").attr("value"));
                 $("#importUploadProgress").attr("value", val + 1);
                 $("#importUploadText").text(val);
-            } else
+            } else {
                 repo.saveTo(thing, function (success) {
                     //console.log(thing.id);
                     con();
@@ -106,6 +105,7 @@ var upload = function (data) {
                     $("#importUploadProgress").attr("value", val + 1);
                     $("#importUploadText").text(val);
                 });
+            }
         });
     }
 
