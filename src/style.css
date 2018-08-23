@@ -113,7 +113,7 @@ button {
 .accslide p,
 h2,
 img {
-    width: calc(100vw - 380px);
+    width: calc(100vw - 520px);
     padding-left: 10px;
 }
 
@@ -122,5 +122,5 @@ img {
 }
 
 input[type="radio"]:checked + label ~ .accslide {
-    width: calc(100vw - 380px);
+    width: calc(100vw - 520px);
 }
