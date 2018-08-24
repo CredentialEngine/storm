@@ -1,0 +1,3 @@
+[submodule "cass-editor"]
+	path = cass-editor
+	url = http://github.com/cassproject/cass-editor
