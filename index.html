@@ -11,9 +11,9 @@
 
 <body>
     <select id="selectedServer" style="float:left;">
-        <option disabled  value="http://nowhere/">Select Server</option>
+        <option disabled selected value="http://nowhere/">Select Server</option>
         <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
-        <option selected value="http://localhost:8080/api/">Localhost</option>
+        <option  value="http://localhost:8080/api/">Localhost</option>
     </select>
     <div class="header">
         <h1>STORM Conversion Toolbox</h1>
@@ -83,27 +83,76 @@
                 <input id="rad3" type="radio" name="rad">
                 <label for="rad3"><a class="vertical">Step 3<br><br>Expand Product Data</a></label>
                 <div class="accslide">
-                    <h2>Expand data with Concept Schemes.</h2>
-                    <p>This step expanded data with definitions taken from vocabularies.</p>
-                    <button>Go</button>
+                    <center>
+                        <h1>Step 3: Expand Product Data</h1>
+                        <hr>
+                    </center>
+                    <p>Here, the linked product data is expanded with definitions and terms from the Concept Schemes harvested from the 0007 or S3000L specifications.</p>
+                    <button id="importDefinitionsAndTerms" style="float:right">Import definitions and terms.</button>
+                    <button id="expandProductDataButton">Go</button>
+                    <hr>
+                    <div id="rad3Progress">
+                        <h2 style="float:right;">Definition and Term Import Progress</h2>
+                        <h2>Expansion Progress</h2>
+                        <p>Progress is shown here.</p>
+                        <div style="float:right;">
+                            <span id="importTermsProgressText">0</span> of <span id="importTermsProgressMax">0</span> definitions and terms imported. <progress id="importTermsProgress" value="0" max="0"></progress> </div>
+                        <progress id="expandTasksProgress" value="0" max="0"></progress> <span id="expandTasksProgressText">0</span> of <span id="expandTasksProgressTextMax">0</span> tasks expanded.<br>
+                        <progress id="saveTasksProgress" value="0" max="0"></progress> <span id="saveTasksProgressText">0</span> of <span id="saveTasksProgressTextMax">0</span> tasks saved.<br>
+                    </div>
                 </div>
             </li>
             <li>
                 <input id="rad4" type="radio" name="rad">
                 <label for="rad4"><a class="vertical">Step 4<br><br>View Expanded Product Data</a></label>
                 <div class="accslide">
-                    <h2>Slide 3</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                    <center>
+                        <h1>Step 4: View Expanded Linked Product Data</h1>
+                        <hr>
+                    </center>
+                    <p>Here, we can see the output of step 3. The product data has been expanded with definitions and terms from the 0007 and S3000L Concept Schemes.</p>
+                    <button id="viewExpandedLinkedDataSearch">Search for Products</button>
+                    <hr>
+                    <div id="viewExpandedLinkedDAtaQrCodeCanvas" style="float:right;width:192px;height:192px;margin-right:10px;"></div>
+                    <h2>Products</h2>
+                    <select id="viewExpandedLinkedDataProducts">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewExpandedLinkedDataProductsFeedback">0 results found.</span>
+                    <h2>Components and Subcomponents</h2>
+                    <select id="viewExpandedLinkedDataComponents">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewExpandedLinkedDataComponentsFeedback">0 results found.</span>
+                    <h2>Tasks</h2>
+                    <select id="viewExpandedLinkedDataTasks">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewExpandedLinkedDataTasksFeedback">0 results found.</span>
+                    <h2>Subtasks</h2>
+                    <select id="viewExpandedLinkedDataSubtasks">
+                        <option selected disabled>Select</option>
+                    </select> <span id="viewExpandedLinkedDataSubtasksFeedback">0 results found.</span>
+                    <hr>
+                    <pre id="viewExpandedLinkedDataIframe" style=""></pre>
                 </div>
             </li>
             <li>
                 <input id="rad5" type="radio" name="rad">
                 <label for="rad5"><a class="vertical">Step 5<br><br>Convert Product Data to CTDL/ASN</a></label>
                 <div class="accslide">
-                    <h2>Slide 3</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
+                    <center>
+                        <h1>Step 5: Convert Product Data to Competencies</h1>
+                        <hr>
+                    </center>
+                    <p>In this step, the product data will be used to construct a framework of competencies, composed of the system, subsystem elements, tasks, subtasks, generated TLOs, generated ELOs, and relations to equipment and occupational specialities.</p>
+                    <button id="convertProductDataButton">Go</button>
+                    <hr>
+                    <div id="rad1Progress">
+                        <h2>Framework Creation Progress</h2>
+                        <p>Progress is shown here.</p>
+                        <progress id="convertProductDataComponentProgress" value="0" max="0"></progress> <span id="convertProductDataComponentProgressText">0</span> of <span id="convertProductDataComponentProgressTextMax">0</span> components converted and saved.<br>
+                        <progress id="convertProductDataTaskProgress" value="0" max="0"></progress> <span id="convertProductDataTaskProgressText">0</span> of <span id="convertProductDataTaskProgressTextMax">0</span> tasks converted and saved.<br>
+                        <progress id="convertProductDataSubtaskProgress" value="0" max="0"></progress> <span id="convertProductDataSubtaskProgressText">0</span> of <span id="convertProductDataSubtaskProgressTextMax">0</span> subtasks converted and saved.<br>
+                        <progress id="importUploadProgress" value="0" max="0"></progress> <span id="importUploadText">0</span> of <span id="importUploadTextMax">0</span> additional objects uploaded.<br>
+                    </div>
                 </div>
             </li>
             <li>
@@ -112,7 +161,6 @@
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
             <li>
@@ -121,7 +169,6 @@
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
             <li>
@@ -130,7 +177,6 @@
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
             <li>
@@ -139,7 +185,6 @@
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
             <li>
@@ -148,7 +193,6 @@
                 <div class="accslide">
                     <h2>Slide 3</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent euismod ultrices ante, ac laoreet nulla vestibulum adipiscing.</p>
-                    <img src="http://lorempixum.com/420/200/city/3" alt="">
                 </div>
             </li>
         </ul>
@@ -160,6 +204,10 @@
     <script src="dist/import.js"></script>
     <script src="dist/upload.js"></script>
     <script src="dist/viewLinkedData.js"></script>
+    <script src="dist/expandProductData.js"></script>
+    <script src="dist/importDefinitionsAndTerms.js"></script>
+    <script src="dist/viewExpandedLinkedData.js"></script>
+    <script src="dist/convertProductDataToCompetencies.js"></script>
 </body>
 
 </html>

@@ -12,6 +12,10 @@ $("#viewLinkedDataSearch").click(function (evt) {
 });
 
 function syntaxHighlight(json) {
+    for (var key in json) {
+        if (key.indexOf("descriptors") != -1)
+            delete json[key];
+    }
     if (typeof json != 'string') {
         json = JSON.stringify(json, undefined, 2);
     }

@@ -80,22 +80,22 @@ var upload = function (data) {
     var saveThing = function (thing) {
         Task.asyncImmediate(function (con) {
             if (repo.selectedServer == "http://nowhere/") {
-                var val = parseInt($("#importUploadProgress").attr("value"));
-                $("#importUploadProgress").attr("value", val + 1);
+                var val = parseInt($("#importUploadProgress").attr("value")) + 1;
+                $("#importUploadProgress").attr("value", val);
                 $("#importUploadText").text(val);
                 setTimeout(con, 30);
             } else {
                 repo.saveTo(thing, function (success) {
-                    var val = parseInt($("#importUploadProgress").attr("value"));
-                    $("#importUploadProgress").attr("value", val + 1);
+                    var val = parseInt($("#importUploadProgress").attr("value")) + 1;
+                    $("#importUploadProgress").attr("value", val);
                     $("#importUploadText").text(val);
                     //console.log(thing.id);
                     con();
                 }, function (error) {
                     console.log(thing.id);
                     console.log(error);
-                    var val = parseInt($("#importUploadProgress").attr("value"));
-                    $("#importUploadProgress").attr("value", val + 1);
+                    var val = parseInt($("#importUploadProgress").attr("value")) + 1;
+                    $("#importUploadProgress").attr("value", val);
                     $("#importUploadText").text(val);
                     con();
                 });
@@ -108,8 +108,8 @@ var upload = function (data) {
     for (var i = 0; i < types.length; i++) {
         var type = types[i];
         var instances = data[type];
-        var val = parseInt($("#importUploadProgress").attr("max"));
-        $("#importUploadProgress").attr("max", val + instances.length);
+        var val = parseInt($("#importUploadProgress").attr("max")) + instances.length;
+        $("#importUploadProgress").attr("max", val);
         $("#importUploadTextMax").text(val);
         for (var j = 0; j < instances.length; j++) {
             var rld = new EcRemoteLinkedData();

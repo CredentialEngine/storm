@@ -31,4 +31,3 @@ $("#0007Import").click(function (evt) {
     };
     fr.readAsText(file);
 });
-$("[for='rad1']").addClass("gtg");
