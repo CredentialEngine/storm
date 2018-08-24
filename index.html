@@ -16,6 +16,7 @@
         <option  value="http://localhost:8080/api/">Localhost</option>
     </select>
     <div class="header">
+        <!--CE Logo-->
         <img style="float:right;height:35px;margin-top:-5px" src="//www.cassproject.org/img/CASS-Logo-website-white.png">
         <h1>STORM Conversion Toolbox</h1>
     </div>
@@ -34,11 +35,11 @@
                     <hr>
                     <h2>Import 0007 XML</h2>
                     <p>This step imports a 0007 XML file and transforms it into linked data.</p>
-                    <input id="0007Input" type="file" /><button id="0007Import">Import</button>
+                    <input id="0007Input" type="file" /><button id="0007Import">Import</button><button id="0007ImportAnd">Import and execute entire process.</button>
                     <hr>
                     <h2>Import S3000L XML</h2>
                     <p>This step imports a S3000L XML file and transforms it into linked data.</p>
-                    <input type="file" /><button>Import</button>
+                    <input type="file" /><button id="S3000LImport">Import</button><button id="S3000LImportAnd">Import and execute entire process.</button>
                     <hr>
                     <div id="rad1Progress">
                         <h2>Import Progress</h2>
