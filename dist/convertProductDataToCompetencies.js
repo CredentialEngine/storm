@@ -41,14 +41,30 @@ $("#convertProductDataButton").click(function (evt) {
     }
 
     var saveThing = function (thing) {
+        var typeMap = {
+            "Component (XB)": "#convertProductDataComponent",
+            "Task (CA)": "#convertProductDataTask",
+            "Subtask (CB)": "#convertProductDataSubtask",
+            undefined: "#convertProductDataOther"
+        };
+
+        var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("max")) + 1;
+        $(typeMap[thing["dcterms:type"]] + "Progress").attr("max", num);
+        $(typeMap[thing["dcterms:type"]] + "ProgressTextMax").text(num);
         Task.asyncImmediate(function (con) {
             //if (EcRepository.getBlocking(thing.shortId()) == null)
             repo2.saveTo(thing, function (success) {
                 //console.log(thing.id);
+                var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
+                $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
+                $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
                 con();
             }, function (error) {
                 console.log(thing.id);
                 console.log(error);
+                var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
+                $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
+                $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
                 con();
             });
         });

@@ -15,16 +15,12 @@ body {
 }
 
 pre {
-    white-space: pre-wrap;
-    /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;
-    /* Mozilla, since 1999 */
-    white-space: -pre-wrap;
-    /* Opera 4-6 */
-    white-space: -o-pre-wrap;
-    /* Opera 7 */
-    word-wrap: break-word;
-    /* Internet Explorer 5.5+ */
+    overflow: scroll;
+    width: 100%;
+}
+
+#viewCtdlasnIframe {
+    height: calc(100% - 185px);
 }
 
 
@@ -106,11 +102,11 @@ label {
     transition: width 1s ease, background 0.5s ease;
 }
 
-#rad2+label,
-#rad4+label,
-#rad6+label,
-#rad8+label,
-#rad10+label {
+#rad2 + label,
+#rad4 + label,
+#rad6 + label,
+#rad8 + label,
+#rad10 + label {
     background: rgba(0, 0, 0, .7);
     -webkit-transition: width 1s ease, background 0.5s ease;
     -moz-transition: width 1s ease, background 0.5s ease;
@@ -120,11 +116,11 @@ label {
 }
 
 label:hover,
-#rad2+label:hover,
-#rad4+label:hover,
-#rad6+label:hover,
-#rad8+label:hover,
-#rad10+label:hover {
+#rad2 + label:hover,
+#rad4 + label:hover,
+#rad6 + label:hover,
+#rad8 + label:hover,
+#rad10 + label:hover {
     background: #232323;
     color: #fff;
     cursor: pointer;
@@ -182,6 +178,6 @@ select {
     margin-top: 10px;
 }
 
-input[type="radio"]:checked+label~.accslide {
+input[type="radio"]:checked + label ~ .accslide {
     width: calc(100vw - 840px);
 }
