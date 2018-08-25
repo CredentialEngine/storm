@@ -69,10 +69,10 @@ $("#viewCtdlasn").change(function (evt) {
     $("#viewCtdlasnSubtasks").html("");
     $("#viewCtdlasnSubtasksFeedback").text(0 +
         " results found.");
-    repo.search("@type:geia\\:XB_logistics_support_analysis_control_number_indentured_item_data AND geia\\:end_item_acronym_code:\"" + $("#viewCtdlasn :selected").text() + "\"", function (xb) {
+    repo.search("@type:XB_logistics_support_analysis_control_number_indentured_item_data AND end_item_acronym_code:\"" + $("#viewCtdlasn :selected").text() + "\"", function (xb) {
         var option = $("#viewCtdlasnComponents").append("<option/>").children().last();
         option.attr("value", xb.id);
-        option.text(xb["geia:logistics_support_analysis_control_number"]);
+        option.text(xb["logistics_support_analysis_control_number"]);
     }, function (eiacs) {
         $("#viewCtdlasnComponentsFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") +
             " results found.")

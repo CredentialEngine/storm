@@ -2,10 +2,10 @@ $("#viewExpandedLinkedDataSearch").click(function (evt) {
     var repo = new EcRepository();
     repo.selectedServer = $("#selectedServer :selected").val();
 
-    repo.search("@type:geia\\:XA_end_item_acronym_code_data", function (eiac) {
+    repo.search("@type:XA_end_item_acronym_code_data", function (eiac) {
         var option = $("#viewExpandedLinkedDataProducts").append("<option/>").children().last();
         option.attr("value", eiac.id);
-        option.text(eiac["geia:end_item_acronym_code"]);
+        option.text(eiac["end_item_acronym_code"]);
     }, function (eiacs) {
         $("#viewExpandedLinkedDataProductsFeedback").text(eiacs.length + " results found.")
     }, console.log);
@@ -63,10 +63,10 @@ $("#viewExpandedLinkedDataProducts").change(function (evt) {
     $("#viewExpandedLinkedDataSubtasks").html("");
     $("#viewExpandedLinkedDataSubtasksFeedback").text(0 +
         " results found.");
-    repo.search("@type:geia\\:XB_logistics_support_analysis_control_number_indentured_item_data AND geia\\:end_item_acronym_code:\"" + $("#viewExpandedLinkedDataProducts :selected").text() + "\"", function (xb) {
+    repo.search("@type:XB_logistics_support_analysis_control_number_indentured_item_data AND end_item_acronym_code:\"" + $("#viewExpandedLinkedDataProducts :selected").text() + "\"", function (xb) {
         var option = $("#viewExpandedLinkedDataComponents").append("<option/>").children().last();
         option.attr("value", xb.id);
-        option.text(xb["geia:logistics_support_analysis_control_number"]);
+        option.text(xb["logistics_support_analysis_control_number"]);
     }, function (eiacs) {
         $("#viewExpandedLinkedDataComponentsFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") +
             " results found.")
