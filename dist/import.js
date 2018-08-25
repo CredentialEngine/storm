@@ -25,7 +25,7 @@ $("#0007Import").click(function (evt) {
     fr = new FileReader();
     fr.onload = function (progress) {
         xml2js.parseString(progress.target.result, function (err, result) {
-            var full_file = result["geia:GEIA-STD-0007"]["geia:full_file"];
+            var full_file = JSON.parse(JSON.stringify(result["geia:GEIA-STD-0007"]["geia:full_file"]).replace(/geia:/g, ""));
             importWorker.postMessage(full_file);
         });
     };

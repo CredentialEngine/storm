@@ -2,13 +2,15 @@ $("#viewLinkedDataSearch").click(function (evt) {
     var repo = new EcRepository();
     repo.selectedServer = $("#selectedServer :selected").val();
 
-    repo.search("@type:geia\\:XA_end_item_acronym_code_data", function (eiac) {
+    repo.searchWithParams("@type:geia\\:XA_end_item_acronym_code_data", {
+        size: 5000
+    }, function (eiac) {
         var option = $("#viewLinkedDataProducts").append("<option/>").children().last();
         option.attr("value", eiac.id);
         option.text(eiac["geia:end_item_acronym_code"]);
     }, function (eiacs) {
         $("#viewLinkedDataProductsFeedback").text(eiacs.length + " results found.")
-    }, console.log);
+    }, console.error);
 });
 
 function syntaxHighlight(json) {
@@ -65,7 +67,9 @@ $("#viewLinkedDataProducts").change(function (evt) {
     $("#viewLinkedDataSubtasks").html("");
     $("#viewLinkedDataSubtasksFeedback").text(0 +
         " results found.");
-    repo.search("@type:geia\\:XB_logistics_support_analysis_control_number_indentured_item_data AND geia\\:end_item_acronym_code:\"" + $("#viewLinkedDataProducts :selected").text() + "\"", function (xb) {
+    repo.searchWithParams("@type:geia\\:XB_logistics_support_analysis_control_number_indentured_item_data AND geia\\:end_item_acronym_code:\"" + $("#viewLinkedDataProducts :selected").text() + "\"", {
+        size: 5000
+    }, function (xb) {
         var option = $("#viewLinkedDataComponents").append("<option/>").children().last();
         option.attr("value", xb.id);
         option.text(xb["geia:logistics_support_analysis_control_number"]);
@@ -100,7 +104,11 @@ $("#viewLinkedDataComponents").change(function (evt) {
     $("#viewLinkedDataSubtasks").html("");
     $("#viewLinkedDataSubtasksFeedback").text(0 +
         " results found.");
-    repo.search("@type:CA_task_requirement_data AND logistics_support_analysis_control_number:\"" + $("#viewLinkedDataComponents :selected").text() + "\"", function (xb) {
+    repo.search, {
+        size: 5000
+    }("@type:CA_task_requirement_data AND logistics_support_analysis_control_number:\"" + $("#viewLinkedDataComponents :selected").text() + "\"", {
+            size: 5000
+        }, function (xb) {
             var option = $("#viewLinkedDataTasks").append("<option/>").children().last();
             option.attr("value", xb.id);
             option.attr("task_code", xb.task_code);
@@ -133,7 +141,9 @@ $("#viewLinkedDataTasks").change(function (evt) {
     $("#viewLinkedDataSubtasks").html("");
     $("#viewLinkedDataSubtasksFeedback").text(0 +
         " results found.");
-    repo.search("@type:CB_subtask_requirement_data AND task_code:\"" + $("#viewLinkedDataTasks :selected").attr("task_code") + "\"", function (xb) {
+    repo.searchWithParams("@type:CB_subtask_requirement_data AND task_code:\"" + $("#viewLinkedDataTasks :selected").attr("task_code") + "\"", {
+        size: 5000
+    }, function (xb) {
         var option = $("#viewLinkedDataSubtasks").append("<option/>").children().last();
         option.attr("value", xb.id);
         option.text(xb["subtask_identification"]);
