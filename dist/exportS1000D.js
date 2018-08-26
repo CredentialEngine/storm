@@ -1,3 +1,4 @@
+EcRepository.caching = true;
 $("#exportS1000D").click(function (evt) {
     var repo = new EcRepository();
     repo.selectedServer = $("#selectedServer :selected").val();
@@ -19,8 +20,14 @@ $("#exportS1000DSelect").change(function (evt) {
     repo.selectedServer = $("#selectedServer :selected").val();
 
     var frameworkId = $("#exportS1000DSelect :selected").attr("value");
-    var f = EcFramework.getBlocking(frameworkId);
-    $("#exportS1000DIframe").text(exportSCP(f));
+    var f = EcFramework.get(frameworkId, function (f) {
+        var ary = [];
+        ary = ary.concat(f.competency);
+        ary = ary.concat(f.relation);
+        repo.precache(ary, function (results) {
+            $("#exportS1000DIframe").text(exportSCP(f));
+        });
+    }, console.error);
 });
 
 function exportSCP(f) {

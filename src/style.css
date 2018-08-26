@@ -23,6 +23,10 @@ pre {
     height: calc(100% - 185px);
 }
 
+#exportS1000DIframe {
+    height: calc(100% - 185px);
+}
+
 
 /*HEADER*/
 
