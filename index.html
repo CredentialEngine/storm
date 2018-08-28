@@ -13,7 +13,7 @@
     <select id="selectedServer" style="float:left;">
         <option disabled selected value="http://nowhere/">Select Server</option>
         <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
-        <option  value="http://localhost:8080/api/">Localhost</option>
+        <option  value="http://localhost/api/">Localhost</option>
         <option  value="http://10.1.123.190:8080/api/">Local Server</option>
     </select>
     <div class="header">
@@ -37,11 +37,11 @@
                     </center>
                     <h2>Import 0007 XML</h2>
                     <p>This step imports a 0007 XML file and transforms it into linked data.</p>
-                    <input id="0007Input" type="file" /><button id="0007Import">Import</button><button id="0007ImportAnd">Import and execute entire process.</button>
+                    <input id="0007Input" type="file" /><button id="0007Import">Import</button><button id="0007ImportAnd" disabled>Import and execute entire process.</button>
                     <hr>
                     <h2>Import S3000L XML</h2>
                     <p>This step imports a S3000L XML file and transforms it into linked data.</p>
-                    <input type="file" /><button id="S3000LImport">Import</button><button id="S3000LImportAnd">Import and execute entire process.</button>
+                    <input type="file" disabled /><button id="S3000LImport" disabled>Import</button><button id="S3000LImportAnd" disabled>Import and execute entire process.</button>
                     <hr>
                     <div id="rad1Progress">
                         <h2>Import Progress</h2>

@@ -95,11 +95,16 @@ $("#convertProductDataButton").click(function (evt) {
     console.log("Searching for XA.");
     repo.search("@type:XA_end_item_acronym_code_data", function (xa) {
         var f = new EcFramework();
-        f.assignId(repo2.selectedServer, xa.getGuid());
+        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_TLOS");
         lookup["XA_" + xa.getGuid()] = f;
         f["ceasn:derivedFrom"] = xa.id;
         f["ceasn:codedNotation"] = xa.getGuid();
-        f.name = xa.end_item_acronym_code;
+        f.name = xa.end_item_acronym_code + " Task, TLO, and Component Breakdown";
+        var f1 = new EcFramework();
+        f1.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS");
+        f1["ceasn:derivedFrom"] = xa.id;
+        f1["ceasn:codedNotation"] = xa.getGuid();
+        f1.name = xa.end_item_acronym_code + " Task and Component Breakdown";
         console.log(f.toJson());
         var f2 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/0a849142-f051-442e-b98b-fbb42e845d10");
         if (f2 == null) {
@@ -127,6 +132,7 @@ $("#convertProductDataButton").click(function (evt) {
                 var xbc = competencyFrom0007(xb);
                 xbc["ceasn:codedNotation"] = xb.getGuid().replace(f.getGuid(), "").substring(1);
                 f.addCompetency(xbc.id);
+                f1.addCompetency(xbc.id);
                 console.log("Added " + xbc.name);
                 saveThing(xbc);
             },
@@ -145,6 +151,7 @@ $("#convertProductDataButton").click(function (evt) {
                                 xbAlignment.source = lookup["XB_" + a.getGuid()].shortId();
                                 xbAlignment.target = lookup["XB_" + b.getGuid()].shortId();
                                 f.addRelation(xbAlignment.shortId());
+                                f1.addRelation(xbAlignment.shortId());
                                 console.log(a.getGuid() + " narrows " + b.getGuid());
                                 saveThing(xbAlignment);
                             }
@@ -157,6 +164,7 @@ $("#convertProductDataButton").click(function (evt) {
                     function (ca) {
                         var cac = competencyFrom0007(ca);
                         f.addCompetency(cac.id);
+                        f1.addCompetency(cac.id);
 
                         var xbc = lookup[("XB_" +
                             ca.end_item_acronym_code + "." +
@@ -168,6 +176,7 @@ $("#convertProductDataButton").click(function (evt) {
                         xbAlignment.source = cac.shortId();
                         xbAlignment.target = xbc.shortId();
                         f.addRelation(xbAlignment.shortId());
+                        f1.addRelation(xbAlignment.shortId());
                         console.log(cac.getGuid() + " narrows " + xbc.getGuid());
                         saveThing(xbAlignment);
                         cac["ceasn:codedNotation"] = cac.getGuid().substring(3).replace(xbc.getGuid().substring(3), "").substring(1);
@@ -202,6 +211,7 @@ $("#convertProductDataButton").click(function (evt) {
                             function (cb) {
                                 var cbc = competencyFrom0007(cb);
                                 f.addCompetency(cbc.id);
+                                f1.addCompetency(cbc.id);
 
                                 var cac = lookup[("CA_" +
                                     cb.end_item_acronym_code + "." +
@@ -214,6 +224,7 @@ $("#convertProductDataButton").click(function (evt) {
                                 xbAlignment.source = cbc.shortId();
                                 xbAlignment.target = cac.shortId();
                                 f.addRelation(xbAlignment.shortId());
+                                f1.addRelation(xbAlignment.shortId());
                                 console.log(cbc.getGuid() + " narrows " + cac.getGuid());
                                 saveThing(xbAlignment);
                                 cbc["ceasn:codedNotation"] = cbc.getGuid().substring(3).replace(cac.getGuid().substring(3), "").substring(1);
@@ -244,6 +255,7 @@ $("#convertProductDataButton").click(function (evt) {
                                         xbAlignment.source = cbc.shortId();
                                         xbAlignment.target = cdc.shortId();
                                         f.addRelation(xbAlignment.shortId());
+                                        f1.addRelation(xbAlignment.shortId());
                                         console.log(cbc.getGuid() + " requires " + cdc.getGuid());
                                         saveThing(xbAlignment);
                                         saveThing(cdc);
@@ -259,6 +271,7 @@ $("#convertProductDataButton").click(function (evt) {
                                             xbAlignment.source = cbc.shortId();
                                             xbAlignment.target = cdc.shortId();
                                             f.addRelation(xbAlignment.shortId());
+                                            f1.addRelation(xbAlignment.shortId());
                                             console.log(cbc.getGuid() + " requires " + cdc.getGuid());
                                             saveThing(xbAlignment);
                                             saveThing(cdc);
@@ -294,6 +307,7 @@ $("#convertProductDataButton").click(function (evt) {
                                                         xbAlignment.source = cac.shortId();
                                                         xbAlignment.target = cgc.shortId();
                                                         f.addRelation(xbAlignment.shortId());
+                                                        f1.addRelation(xbAlignment.shortId());
                                                         console.log(cac.getGuid() + " requires " + cgc.getGuid());
                                                         saveThing(xbAlignment);
                                                         saveThing(cgc);
@@ -301,6 +315,8 @@ $("#convertProductDataButton").click(function (evt) {
                                                     function (cgs) {
                                                         f.competency.sort();
                                                         saveThing(f);
+                                                        f1.competency.sort();
+                                                        saveThing(f1);
                                                         saveThing(f2);
                                                         saveThing(f3);
                                                         saveThing(f4);

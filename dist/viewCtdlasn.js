@@ -7,7 +7,7 @@ $("#viewCtdlasnSearch").click(function (evt) {
             var eiac = eiacs[i];
 
             var option = $("#viewCtdlasn").append("<option/>").children().last();
-            option.attr("value", eiac.id);
+            option.attr("value", eiac.shortId());
             option.text(eiac["name"]);
         }
         $("#viewCtdlasnFeedback").text(eiacs.length + " results found.")
@@ -53,7 +53,7 @@ $("#viewCtdlasn").change(function (evt) {
     EcRemote.getExpectingObject(
         EcRepository.getBlocking(
             $("#viewCtdlasn :selected").attr("value")
-        ).shortId().replace("data", "ceasn"), "",
+        ).shortId().replace("data", "ceasn"), null,
         function (obj) {
             $("#viewCtdlasnIframe").html(
                 syntaxHighlight(obj)
