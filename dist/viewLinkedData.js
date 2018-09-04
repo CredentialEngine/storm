@@ -2,7 +2,7 @@ $("#viewLinkedDataSearch").click(function (evt) {
     var repo = new EcRepository();
     repo.selectedServer = $("#selectedServer :selected").val();
 
-    repo.searchWithParams("@type:XA_end_item_acronym_code_data", {
+    repo.searchWithParams("@type:XA_end_item_acronym_code_data OR @type:Product", {
         size: 5000
     }, function (eiac) {
         var option = $("#viewLinkedDataProducts").append("<option/>").children().last();

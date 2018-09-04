@@ -31,3 +31,14 @@ $("#0007Import").click(function (evt) {
     };
     fr.readAsText(file);
 });
+
+$("#S3000LImport").click(function (evt) {
+    var file = $("#S3000LInput")[0].files[0];
+    fr = new FileReader();
+    fr.onload = function (progress) {
+        xml2js.parseString(progress.target.result, function (err, result) {
+            importS3000L(result);
+        });
+    };
+    fr.readAsText(file);
+});
