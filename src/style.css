@@ -62,7 +62,6 @@ pre {
     writing-mode: vertical-rl;
     font-size: x-large;
     text-orientation: mixed;
-    #transform: rotate(180deg);
     margin-left: 5px;
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -92,7 +92,7 @@
                         <hr>
                     </center>
                     <p>Here, the linked product data is expanded with definitions and terms from the Concept Schemes harvested from the 0007 or S3000L specifications.</p>
-                    <button id="importDefinitionsAndTerms" style="float:right">Import definitions and terms.</button>
+                    <button id="importDefinitionsAndTerms" style="float:right;margin-right:10px;">Import definitions and terms.</button>
                     <button id="expandProductDataButton">Go</button>
                     <hr>
                     <div id="rad3Progress">
@@ -100,7 +100,7 @@
                         <h2>Expansion Progress</h2>
                         <p>Progress is shown here.</p>
                         <div style="float:right;">
-                            <span id="importTermsProgressText">0</span> of <span id="importTermsProgressMax">0</span> definitions and terms imported. <progress id="importTermsProgress" value="0" max="0"></progress> </div>
+                            <span id="importTermsProgressText">0</span> of <span id="importTermsProgressMax">0</span> definitions and terms imported. <progress id="importTermsProgress" value="0" max="0" style="margin-right:10px;"></progress> </div>
                         <progress id="expandTasksProgress" value="0" max="0"></progress> <span id="expandTasksProgressText">0</span> of <span id="expandTasksProgressTextMax">0</span> tasks expanded.<br>
                         <progress id="saveTasksProgress" value="0" max="0"></progress> <span id="saveTasksProgressText">0</span> of <span id="saveTasksProgressTextMax">0</span> tasks saved.<br>
                     </div>
@@ -163,7 +163,7 @@
                 <input id="rad6" type="radio" name="rad">
                 <label for="rad6"><a class="vertical">Step 6: View Conversion Process</a></label>
                 <div class="accslide">
-                    <img style="width:100%;" src="images/blue-diagram.png">
+                    <img style="width:100%;max-height:100%;" src="images/blue-diagram.png">
                 </div>
             </li>
             <li>
@@ -176,7 +176,7 @@
             <li>
                 <input id="rad8" type="radio" name="rad">
                 <label for="rad8"><a class="vertical">Step 8: View Output Framework</a></label>
-                <iframe class="accslide" style="margin:0px;padding:0px;border:0px;" id="viewOutputFramework" src="http://staging.credentialengine.org:8080/cass-editor/index.html?server=http://staging.credentialengine.org:8080&ceasnDataFields=true">
+                <iframe class="accslide" style="margin:0px;padding:0px;border:0px;" id="viewOutputFramework">
                 </iframe>
             </li>
             <li>
