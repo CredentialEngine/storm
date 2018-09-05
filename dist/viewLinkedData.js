@@ -7,7 +7,11 @@ $("#viewLinkedDataSearch").click(function (evt) {
     }, function (eiac) {
         var option = $("#viewLinkedDataProducts").append("<option/>").children().last();
         option.attr("value", eiac.id);
-        option.text(eiac["end_item_acronym_code"]);
+        if (eiac["end_item_acronym_code"] != null)
+            option.text(eiac["end_item_acronym_code"]);
+        else {
+            option.text(eiac.name[0].descr);
+        }
     }, function (eiacs) {
         $("#viewLinkedDataProductsFeedback").text(eiacs.length + " results found.")
     }, console.error);
@@ -77,6 +81,42 @@ $("#viewLinkedDataProducts").change(function (evt) {
         $("#viewLinkedDataComponentsFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") +
             " results found.")
     }, console.log);
+    var getBE = function (url) {
+        EcRepository.get(url, function (beUsage) {
+            EcRepository.get(beUsage.beRef[0], function (beRef) {
+                if (beRef.hwPart != null)
+                    EcRepository.get(beRef.hwPart[0], function (hwPart) {
+                        EcRepository.get(hwPart.partRef[0], function (partRef) {
+                            if (beRef.plndTask != null || beRef.supTask != null || beRef.taskReq != null) {
+                                var count = parseInt($("#viewLinkedDataComponentsFeedback").text().split(" ")[0]) + 1;
+                                $("#viewLinkedDataComponentsFeedback").text(count +
+                                    " results found.");
+                                var option = $("#viewLinkedDataComponents").append("<option/>").children().last();
+                                option.text(partRef.name[0].descr[0]);
+                                option.attr("value", beRef.id);
+                            }
+                        }, console.error);
+                    }, console.error);
+            }, console.error);
+        }, console.error);
+    }
+    EcRepository.get($("#viewLinkedDataProducts :selected").attr("value"), function (prod) {
+        var bkdns = prod.bkdns[0].bkdn;
+        if (bkdns != null)
+            for (var i = 0; i < bkdns.length; i++) {
+                EcRepository.get(bkdns[i], function (bkdn) {
+                    if (bkdn.bkdnRev != null)
+                        for (var i = 0; i < bkdn.bkdnRev.length; i++) {
+                            EcRepository.get(bkdn.bkdnRev[i], function (bkdnRev) {
+                                if (bkdnRev.beUsage != null)
+                                    for (var i = 0; i < bkdnRev.beUsage.length; i++) {
+                                        getBE(bkdnRev.beUsage[i]);
+                                    }
+                            }, console.error);
+                        }
+                }, console.error);
+            }
+    }, console.error);
 });
 
 $("#viewLinkedDataComponents").change(function (evt) {
@@ -113,8 +153,32 @@ $("#viewLinkedDataComponents").change(function (evt) {
             option.text(xb["task_identification"]);
         },
         function (eiacs) {
-            $("#viewLinkedDataTasksFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") + " results found.")
+            $("#viewLinkedDataTasksFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") + " results found.");
         }, console.log);
+
+    EcRepository.get($("#viewLinkedDataComponents :selected").attr("value"), function (beRef) {
+        var ary = [];
+        if (beRef.plndTask != null)
+            ary = ary.concat(beRef.plndTask);
+
+        if (beRef.supTask != null)
+            ary = ary.concat(beRef.supTask);
+
+        for (var i = 0; i < ary.length; i++) {
+            EcRepository.get(ary[i], function (plndTask) {
+                EcRepository.get(plndTask.taskRef[0], function (taskRef) {
+                    EcRepository.get(taskRef.taskRev[0], function (taskRev) {
+                        var count = parseInt($("#viewLinkedDataTasksFeedback").text().split(" ")[0]) + 1;
+                        $("#viewLinkedDataTasksFeedback").text(count +
+                            " results found.");
+                        var option = $("#viewLinkedDataTasks").append("<option/>").children().last();
+                        option.attr("value", taskRev.id);
+                        option.text(taskRev.name[0].descr["0"]);
+                    }, console.error);
+                }, console.error);
+            }, console.error);
+        }
+    }, console.error);
 });
 
 $("#viewLinkedDataTasks").change(function (evt) {
@@ -148,6 +212,19 @@ $("#viewLinkedDataTasks").change(function (evt) {
     }, function (eiacs) {
         $("#viewLinkedDataSubtasksFeedback").text(eiacs.length + (eiacs.length == 50 ? "+" : "") + " results found.")
     }, console.log);
+
+    EcRepository.get($("#viewLinkedDataTasks :selected").attr("value"), function (taskrev) {
+        for (var i = 0; i < taskrev.subtByDef.length; i++) {
+            EcRepository.get(taskrev.subtByDef[i], function (subtByDef) {
+                var count = parseInt($("#viewLinkedDataSubtasksFeedback").text().split(" ")[0]) + 1;
+                $("#viewLinkedDataSubtasksFeedback").text(count +
+                    " results found.");
+                var option = $("#viewLinkedDataSubtasks").append("<option/>").children().last();
+                option.attr("value", subtByDef.id);
+                option.text(subtByDef.name[0].descr["0"]);
+            }, console.error);
+        }
+    }, console.error);
 });
 
 $("#viewLinkedDataSubtasks").change(function (evt) {

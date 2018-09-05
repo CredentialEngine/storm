@@ -14,11 +14,13 @@ $("#convertProductDataButton").click(function (evt) {
     EcRepository.caching = true;
 
     function competencyFrom0007(xb) {
-
         var xbc = new EcCompetency();
         xbc.assignId(repo2.selectedServer, xb.type.split("_")[0] + "_" + xb.getGuid());
         lookup[xb.type.split("_")[0] + "_" + xb.getGuid()] = xbc;
         xbc["dcterms:type"] = {
+            XB_logistics_support_analysis_control_number_indentured_item_data: "Component (XB)",
+            CA_task_requirement_data: "Task (CA)",
+            CB_subtask_requirement_data: "Subtask (CB)",
             XB_logistics_support_analysis_control_number_indentured_item_data: "Component (XB)",
             CA_task_requirement_data: "Task (CA)",
             CB_subtask_requirement_data: "Subtask (CB)"
@@ -35,8 +37,6 @@ $("#convertProductDataButton").click(function (evt) {
         }[xb.type]];
         if (xbc.description != null)
             xbc.description = xbc.description.replace(/ +/g, " ").replace(/- /g, "");
-
-        //    console.log(xbc.getGuid() + " created.");
         return xbc;
     }
 
@@ -69,28 +69,89 @@ $("#convertProductDataButton").click(function (evt) {
             });
         });
     }
-    var saveThingThenGenerateTlo = function (thing, ca, f4) {
-        Task.asyncImmediate(function (con) {
-            repo2.saveTo(thing, function (success) {
-                //console.log(thing.id);
-                EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromCa?url=", ca.shortId(), function (tlo) {
-                    var lo = new EcCompetency();
-                    lo.assignId(repo2.selectedServer, thing.getGuid() + "_TLO");
-                    lo.name = tlo;
-                    lo["dcterms:type"] = "TLO";
-                    lo["ceasn:derivedFrom"] = ca.id;
-                    f4.addCompetency(lo.id);
-                    saveThing(lo);
-                }, error);
-                con();
-            }, function (error) {
-                console.log(thing.id);
-                console.log(error);
-                con();
-            });
-        });
 
-    }
+
+    repo.search("@type:Product", function (xa) {
+        var f = new EcFramework();
+        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_TLOS");
+        f["ceasn:derivedFrom"] = xa.id;
+        f["ceasn:codedNotation"] = xa.getGuid();
+        f.name = xa.end_item_acronym_code + " Task, TLO, and Component Breakdown";
+        var f1 = new EcFramework();
+        f1.assignId(repo2.selectedServer, eiac.getGuid() + "_TASKS");
+        f1["ceasn:derivedFrom"] = xa.id;
+        f1["ceasn:codedNotation"] = xa.getGuid();
+        f1.name = xa.end_item_acronym_code + " Task and Component Breakdown";
+        var f2 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/0a849142-f051-442e-b98b-fbb42e845d10");
+        if (f2 == null) {
+            f2 = new EcFramework();
+            f2.assignId(repo2.selectedServer, "0a849142-f051-442e-b98b-fbb42e845d10");
+            f2.name = "Military Occupations, Ratings, etc.";
+        }
+        var f3 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/0a849142-f051-442e-b98b-fbb42e845d11");
+        if (f3 == null) {
+            f3 = new EcFramework();
+            f3.assignId(repo2.selectedServer, "0a849142-f051-442e-b98b-fbb42e845d11");
+            f3.name = "Parts, Tools, and Equipment.";
+        }
+        var f4 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/" + xa.getGuid() + "_LOs");
+        if (f4 == null) {
+            f4 = new EcFramework();
+            f4.assignId(repo2.selectedServer, xa.getGuid() + "_LOs");
+            f4.name = "Learning Objectives for " + f.name;
+        }
+
+        var getBE = function (url) {
+            EcRepository.get(url, function (beUsage) {
+                EcRepository.get(beUsage.beRef[0], function (beRef) {
+                    //                    if (beRef.hwPart != null)
+                    //                        EcRepository.get(beRef.hwPart[0], function (hwPart) {
+                    //                            EcRepository.get(hwPart.partRef[0], function (partRef) {
+                    //                                if (beRef.plndTask != null || beRef.supTask != null || beRef.taskReq != null) {
+                    //                                    var count = parseInt($("#convertProductDataTaskProgressTextMax").text()) + 1;
+                    //                                    $("#convertProductDataTaskProgressTextMax").text(count);
+                    //                                }
+                    //
+                    //                            }, console.error);
+                    //                        }, console.error);
+
+                    var ary = [];
+                    if (beRef.plndTask != null)
+                        ary = ary.concat(beRef.plndTask);
+                    if (beRef.supTask != null)
+                        ary = ary.concat(beRef.supTask);
+                    for (var i = 0; i < ary.length; i++) {
+                        EcRepository.get(ary[i], function (plndTask) {
+                            EcRepository.get(plndTask.taskRef[0], function (taskRef) {
+                                EcRepository.get(taskRef.taskRev[0], function (taskRev) {
+                                    var count = parseInt($("#convertProductDataTaskProgressTextMax").text()) + 1;
+                                    $("#convertProductDataTaskProgressTextMax").text(count +
+                                        " results found.");
+                                }, console.error);
+                            }, console.error);
+                        }, console.error);
+                    }
+                }, console.error);
+            }, console.error);
+        }
+        var bkdns = xa.bkdns[0].bkdn;
+        if (bkdns != null)
+            for (var i = 0; i < bkdns.length; i++) {
+                EcRepository.get(bkdns[i], function (bkdn) {
+                    if (bkdn.bkdnRev != null)
+                        for (var i = 0; i < bkdn.bkdnRev.length; i++) {
+                            EcRepository.get(bkdn.bkdnRev[i], function (bkdnRev) {
+                                if (bkdnRev.beUsage != null)
+                                    for (var i = 0; i < bkdnRev.beUsage.length; i++) {
+                                        getBE(bkdnRev.beUsage[i]);
+                                    }
+                            }, console.error);
+                        }
+                }, console.error);
+            }
+    }, function (eiacs) {
+        $("#viewExpandedLinkedDataProductsFeedback").text(eiacs.length + " results found.")
+    }, console.log);
 
     console.log("Searching for XA.");
     repo.search("@type:XA_end_item_acronym_code_data", function (xa) {
@@ -180,7 +241,6 @@ $("#convertProductDataButton").click(function (evt) {
                         console.log(cac.getGuid() + " narrows " + xbc.getGuid());
                         saveThing(xbAlignment);
                         cac["ceasn:codedNotation"] = cac.getGuid().substring(3).replace(xbc.getGuid().substring(3), "").substring(1);
-                        //saveThingThenGenerateTlo(cac,ca,f4);
                         saveThing(cac);
 
                         EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromCa?url=", ca.shortId(), function (tlo) {

@@ -27,6 +27,14 @@ pre {
     height: calc(100% - 185px);
 }
 
+#viewExpandedLinkedDataIframe {
+    height: calc(100% - 342px);
+}
+
+#viewLinkedDataIframe {
+    height: calc(100% - 342px);
+}
+
 
 /*HEADER*/
 

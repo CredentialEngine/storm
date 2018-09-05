@@ -7,8 +7,9 @@ function importS3000L(data) {
     var namespace = "http://www.asd-europe.org/s-series/s3000l";
 
     var lookupTable = {};
+    var revLookupTable = {};
 
-    function shatter(data, prevName) {
+    function shatter(data, prevName, prevId) {
         var val = parseInt($("#importParseProgress").attr("value")) + 1;
         $("#importParseProgress").attr("value", val);
         $("#importParseText").text(val);
@@ -17,7 +18,7 @@ function importS3000L(data) {
             $("#importParseProgress").attr("max", val);
             $("#importParseTextMax").text(val);
             for (var i = 0; i < data.length; i++) {
-                var result = shatter(data[i], prevName);
+                var result = shatter(data[i], prevName, prevId);
                 if (result == true)
                     data.splice(i, 1);
                 else if (result == false || result == null)
@@ -29,6 +30,18 @@ function importS3000L(data) {
                 return true;
             return data;
         } else if (EcObject.isObject(data)) {
+
+            if (data["$"] != null)
+                if (data["$"].uid != null) {
+                    if (revLookupTable[data["$"].uid] == null)
+                        revLookupTable[data["$"].uid] = {};
+                    if (revLookupTable[data["$"].uid]["reverse" + prevName] == null)
+                        revLookupTable[data["$"].uid]["reverse" + prevName] = [];
+                    if (prevId !== undefined)
+                        revLookupTable[data["$"].uid]["reverse" + prevName].push(EcRemoteLinkedData.veryShortId(repo.selectedServer, prevId));
+                    prevId = data["$"].uid;
+                }
+
             //We're in something that can be called a fragment. Recurse first, then turn into an object and save.
             var val = parseInt($("#importParseProgress").attr("max")) + EcObject.keys(data).length;
             $("#importParseProgress").attr("max", val);
@@ -40,7 +53,7 @@ function importS3000L(data) {
                     $("#importParseText").text(val);
                     continue;
                 }
-                var result = shatter(data[prop], prop);
+                var result = shatter(data[prop], prop, prevId);
                 if (result == true)
                     delete data[prop];
                 else if (result == false || result == null)
@@ -51,6 +64,13 @@ function importS3000L(data) {
 
             if (data["$"] != null)
                 if (data["$"].uidRef != null) {
+                    if (revLookupTable[data["$"].uidRef] == null)
+                        revLookupTable[data["$"].uidRef] = {};
+                    if (revLookupTable[data["$"].uidRef]["reverse" + prevName] == null)
+                        revLookupTable[data["$"].uidRef]["reverse" + prevName] = [];
+
+                    if (prevId !== undefined)
+                        revLookupTable[data["$"].uidRef]["reverse" + prevName].push(EcRemoteLinkedData.veryShortId(repo.selectedServer, prevId));
                     return EcRemoteLinkedData.veryShortId(repo.selectedServer, data["$"].uidRef);
                 }
             if (data["$"] != null)
@@ -85,6 +105,11 @@ function importS3000L(data) {
         $("#importUploadTextMax").text(val);
 
         Task.asyncImmediate(function (con) {
+
+            if (revLookupTable[thing.getGuid()] != null)
+                for (var param in revLookupTable[thing.getGuid()]) {
+                    thing[param] = revLookupTable[thing.getGuid()][param];
+                }
             if (repo.selectedServer == "http://nowhere/") {
                 var val = parseInt($("#importUploadProgress").attr("value")) + 1;
                 $("#importUploadProgress").attr("value", val);
