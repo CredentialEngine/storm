@@ -108,8 +108,7 @@ label {
     display: block;
     height: calc(100vh - 25px - 40px);
     width: 40px;
-    border-right: 1px white solid;
-    border-left: 1px white solid;
+    border-left: 1px #ccc solid;
     color: #fff;
     background: rgba(0, 0, 128, .7);
     text-align: center;
@@ -136,6 +135,10 @@ label {
     -o-transition: width 1s ease, background 0.5s ease;
     -ms-transition: width 1s ease, background 0.5s ease;
     transition: width 1s ease, background 0.5s ease;
+}
+
+#rad10+label {
+    border-right: 1px #ccc solid;
 }
 
 label:hover,
