@@ -58,6 +58,17 @@ pre {
     color: #999;
 }
 
+.vertical {
+    writing-mode: vertical-rl;
+    font-size: x-large;
+    text-orientation: mixed;
+    #transform: rotate(180deg);
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 hr {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -98,7 +109,9 @@ label a {
 label {
     display: block;
     height: calc(100vh - 25px - 40px);
-    width: 80px;
+    width: 40px;
+    border-right: 1px white solid;
+    border-left: 1px white solid;
     color: #fff;
     background: rgba(0, 0, 128, .7);
     text-align: center;
@@ -114,11 +127,11 @@ label {
     transition: width 1s ease, background 0.5s ease;
 }
 
-#rad2 + label,
-#rad4 + label,
-#rad6 + label,
-#rad8 + label,
-#rad10 + label {
+#rad2+label,
+#rad4+label,
+#rad6+label,
+#rad8+label,
+#rad10+label {
     background: rgba(0, 0, 128, .5);
     -webkit-transition: width 1s ease, background 0.5s ease;
     -moz-transition: width 1s ease, background 0.5s ease;
@@ -128,11 +141,11 @@ label {
 }
 
 label:hover,
-#rad2 + label:hover,
-#rad4 + label:hover,
-#rad6 + label:hover,
-#rad8 + label:hover,
-#rad10 + label:hover {
+#rad2+label:hover,
+#rad4+label:hover,
+#rad6+label:hover,
+#rad8+label:hover,
+#rad10+label:hover {
     background: (0, 0, 128, .9);
     color: #fff;
     cursor: pointer;
@@ -190,6 +203,6 @@ select {
     margin-top: 10px;
 }
 
-input[type="radio"]:checked + label ~ .accslide {
-    width: calc(100vw - 840px);
+input[type="radio"]:checked+label~.accslide {
+    width: calc(100vw - 440px);
 }

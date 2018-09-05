@@ -1,5 +1,4 @@
 $("#convertProductDataButton").click(function (evt) {
-
     var repo = new EcRepository();
     repo.selectedServer = $("#selectedServer :selected").val();
 
@@ -125,7 +124,6 @@ $("#convertProductDataButton").click(function (evt) {
                 });
             });
     }
-
 
     repo.search("@type:Product", function (xa) {
         var f = new EcFramework();
