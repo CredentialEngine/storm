@@ -20,9 +20,6 @@ $("#convertProductDataButton").click(function (evt) {
         xbc["dcterms:type"] = {
             XB_logistics_support_analysis_control_number_indentured_item_data: "Component (XB)",
             CA_task_requirement_data: "Task (CA)",
-            CB_subtask_requirement_data: "Subtask (CB)",
-            XB_logistics_support_analysis_control_number_indentured_item_data: "Component (XB)",
-            CA_task_requirement_data: "Task (CA)",
             CB_subtask_requirement_data: "Subtask (CB)"
         }[xb.type];
         xbc["ceasn:derivedFrom"] = xb.id;
@@ -40,34 +37,93 @@ $("#convertProductDataButton").click(function (evt) {
         return xbc;
     }
 
+    function competencyFromS3000L(xb) {
+        var xbc = new EcCompetency();
+        xbc.assignId(repo2.selectedServer, xb.getGuid() + "_COMP");
+        xbc["dcterms:type"] = {
+            BreakdownElementUsageInBreakdown: "Component (BreakdownElementUsageInBreakdown)",
+            OperationalTask: "Task (OperationalTask)",
+            RectifyingTask: "Task (RectifyingTask)",
+            TaskRevision: "Task (TaskRevision)",
+            SupportingTaskTarget: "Task (SupportingTaskTarget)",
+            SubtaskByDefinition: "Subtask (SubtaskByDefinition)"
+        }[xb.type];
+
+        xbc["ceasn:derivedFrom"] = xb.id;
+        if (xb.beRef != null)
+            EcRepository.get(xb.beRef[0], function (beRef) {
+                if (beRef.hwPart != null)
+                    EcRepository.get(beRef.hwPart[0], function (hwPart) {
+                        EcRepository.get(hwPart.partRef[0], function (partRef) {
+                            xbc.name = partRef.name[0].descr[0];
+                        }, console.error);
+                    }, console.error);
+
+                //        xbc.name = xb[{
+                //            BreakdownElementUsageInBreakdown: xb.name[0].descr[0],
+                //            CA_task_requirement_data: "task_identification",
+                //            CB_subtask_requirement_data: "subtask_identification"
+                //        }[xb.type]];
+            });
+
+        if (xb.taskRev != null)
+            EcRepository.get(xb.taskRev[0], function (taskRev) {
+                xbc.name = taskRev.name[0].descr["0"];
+            }, console.error);
+
+        if (xb.name != null)
+            xbc.name = xb.name[0].descr["0"];
+        return xbc;
+    }
+
     var saveThing = function (thing) {
         var typeMap = {
             "Component (XB)": "#convertProductDataComponent",
             "Task (CA)": "#convertProductDataTask",
             "Subtask (CB)": "#convertProductDataSubtask",
+            "Component (BreakdownElementUsageInBreakdown)": "#convertProductDataComponent",
+            "Task (OperationalTask)": "#convertProductDataTask",
+            "Task (RectifyingTask)": "#convertProductDataTask",
+            "Task (TaskRevision)": "#convertProductDataTask",
+            "Task (SupportingTaskTarget)": "#convertProductDataTask",
+            "Subtask (SubtaskByDefinition)": "#convertProductDataSubtask",
             undefined: "#convertProductDataOther"
         };
 
         var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("max")) + 1;
         $(typeMap[thing["dcterms:type"]] + "Progress").attr("max", num);
         $(typeMap[thing["dcterms:type"]] + "ProgressTextMax").text(num);
-        Task.asyncImmediate(function (con) {
-            //if (EcRepository.getBlocking(thing.shortId()) == null)
+        if (EcRemote.async == false)
             repo2.saveTo(thing, function (success) {
                 //console.log(thing.id);
                 var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
                 $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
                 $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
-                con();
             }, function (error) {
                 console.log(thing.id);
                 console.log(error);
                 var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
                 $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
                 $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
-                con();
             });
-        });
+        else
+            Task.asyncImmediate(function (con) {
+                //if (EcRepository.getBlocking(thing.shortId()) == null)
+                repo2.saveTo(thing, function (success) {
+                    //console.log(thing.id);
+                    var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
+                    $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
+                    $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
+                    con();
+                }, function (error) {
+                    console.log(thing.id);
+                    console.log(error);
+                    var num = parseInt($(typeMap[thing["dcterms:type"]] + "Progress").attr("value")) + 1;
+                    $(typeMap[thing["dcterms:type"]] + "Progress").attr("value", num);
+                    $(typeMap[thing["dcterms:type"]] + "ProgressText").text(num);
+                    con();
+                });
+            });
     }
 
 
@@ -76,12 +132,12 @@ $("#convertProductDataButton").click(function (evt) {
         f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_TLOS");
         f["ceasn:derivedFrom"] = xa.id;
         f["ceasn:codedNotation"] = xa.getGuid();
-        f.name = xa.end_item_acronym_code + " Task, TLO, and Component Breakdown";
+        f.name = xa.name[0].descr[0] + " Task, TLO, and Component Breakdown";
         var f1 = new EcFramework();
-        f1.assignId(repo2.selectedServer, eiac.getGuid() + "_TASKS");
+        f1.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS");
         f1["ceasn:derivedFrom"] = xa.id;
         f1["ceasn:codedNotation"] = xa.getGuid();
-        f1.name = xa.end_item_acronym_code + " Task and Component Breakdown";
+        f1.name = xa.name[0].descr[0] + " Task and Component Breakdown";
         var f2 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/0a849142-f051-442e-b98b-fbb42e845d10");
         if (f2 == null) {
             f2 = new EcFramework();
@@ -94,27 +150,30 @@ $("#convertProductDataButton").click(function (evt) {
             f3.assignId(repo2.selectedServer, "0a849142-f051-442e-b98b-fbb42e845d11");
             f3.name = "Parts, Tools, and Equipment.";
         }
-        var f4 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/" + xa.getGuid() + "_LOs");
-        if (f4 == null) {
-            f4 = new EcFramework();
-            f4.assignId(repo2.selectedServer, xa.getGuid() + "_LOs");
-            f4.name = "Learning Objectives for " + f.name;
-        }
-
+        EcRemote.async = false;
         var getBE = function (url) {
             EcRepository.get(url, function (beUsage) {
                 EcRepository.get(beUsage.beRef[0], function (beRef) {
-                    //                    if (beRef.hwPart != null)
-                    //                        EcRepository.get(beRef.hwPart[0], function (hwPart) {
-                    //                            EcRepository.get(hwPart.partRef[0], function (partRef) {
-                    //                                if (beRef.plndTask != null || beRef.supTask != null || beRef.taskReq != null) {
-                    //                                    var count = parseInt($("#convertProductDataTaskProgressTextMax").text()) + 1;
-                    //                                    $("#convertProductDataTaskProgressTextMax").text(count);
-                    //                                }
-                    //
-                    //                            }, console.error);
-                    //                        }, console.error);
-
+                    var c = competencyFromS3000L(beUsage);
+                    f.addCompetency(c.shortId());
+                    f1.addCompetency(c.shortId());
+                    saveThing(c);
+                    if (beUsage.reversebeChildRef != null && beUsage.reversebeChildRef.length > 0) {
+                        for (var i = 0; i < beUsage.reversebeChildRef.length; i++) {
+                            for (var j = 0; j < EcRepository.getBlocking(beUsage.reversebeChildRef[i]).reversebeChild.length; j++) {
+                                var xbAlignment = new EcAlignment();
+                                var parentBreakdownElement = EcRepository.getBlocking(EcRepository.getBlocking(beUsage.reversebeChildRef[i]).reversebeChild[j]);
+                                var ctgt = competencyFromS3000L(parentBreakdownElement);
+                                xbAlignment.assignId(repo2.selectedServer, c.getGuid() + "_" + Relation.NARROWS + "_" + ctgt.getGuid());
+                                xbAlignment.relationType = Relation.NARROWS;
+                                xbAlignment.source = c.shortId();
+                                xbAlignment.target = ctgt.shortId();
+                                f.addRelation(xbAlignment.shortId());
+                                f1.addRelation(xbAlignment.shortId());
+                                saveThing(xbAlignment);
+                            }
+                        }
+                    }
                     var ary = [];
                     if (beRef.plndTask != null)
                         ary = ary.concat(beRef.plndTask);
@@ -124,9 +183,35 @@ $("#convertProductDataButton").click(function (evt) {
                         EcRepository.get(ary[i], function (plndTask) {
                             EcRepository.get(plndTask.taskRef[0], function (taskRef) {
                                 EcRepository.get(taskRef.taskRev[0], function (taskRev) {
-                                    var count = parseInt($("#convertProductDataTaskProgressTextMax").text()) + 1;
-                                    $("#convertProductDataTaskProgressTextMax").text(count +
-                                        " results found.");
+                                    var cx = competencyFromS3000L(taskRef);
+                                    f.addCompetency(cx.shortId());
+                                    f1.addCompetency(cx.shortId());
+                                    saveThing(cx);
+                                    var xbAlignment = new EcAlignment();
+                                    xbAlignment.assignId(repo2.selectedServer, cx.getGuid() + "_" + Relation.NARROWS + "_" + c.getGuid());
+                                    xbAlignment.relationType = Relation.NARROWS;
+                                    xbAlignment.source = cx.shortId();
+                                    xbAlignment.target = c.shortId();
+                                    f.addRelation(xbAlignment.shortId());
+                                    f1.addRelation(xbAlignment.shortId());
+                                    saveThing(xbAlignment);
+                                    if (taskRev.subtByDef != null)
+                                        for (var j = 0; j < taskRev.subtByDef.length; j++) {
+                                            EcRepository.get(taskRev.subtByDef[j], function (subtByDef) {
+                                                var cxs = competencyFromS3000L(subtByDef);
+                                                f.addCompetency(cxs.shortId());
+                                                f1.addCompetency(cxs.shortId());
+                                                saveThing(cxs);
+                                                var xbAlignmenta = new EcAlignment();
+                                                xbAlignmenta.assignId(repo2.selectedServer, cxs.getGuid() + "_" + Relation.NARROWS + "_" + cx.getGuid());
+                                                xbAlignmenta.relationType = Relation.NARROWS;
+                                                xbAlignmenta.source = cxs.shortId();
+                                                xbAlignmenta.target = cx.shortId();
+                                                f.addRelation(xbAlignmenta.shortId());
+                                                f1.addRelation(xbAlignmenta.shortId());
+                                                saveThing(xbAlignmenta);
+                                            });
+                                        }
                                 }, console.error);
                             }, console.error);
                         }, console.error);
@@ -139,17 +224,23 @@ $("#convertProductDataButton").click(function (evt) {
             for (var i = 0; i < bkdns.length; i++) {
                 EcRepository.get(bkdns[i], function (bkdn) {
                     if (bkdn.bkdnRev != null)
-                        for (var i = 0; i < bkdn.bkdnRev.length; i++) {
-                            EcRepository.get(bkdn.bkdnRev[i], function (bkdnRev) {
+                        for (var j = 0; j < bkdn.bkdnRev.length; j++) {
+                            EcRepository.get(bkdn.bkdnRev[j], function (bkdnRev) { //bkdnr
                                 if (bkdnRev.beUsage != null)
-                                    for (var i = 0; i < bkdnRev.beUsage.length; i++) {
-                                        getBE(bkdnRev.beUsage[i]);
+                                    for (var k = 0; k < bkdnRev.beUsage.length; k++) {
+                                        getBE(bkdnRev.beUsage[k]);
                                     }
                             }, console.error);
                         }
                 }, console.error);
             }
+
+        saveThing(f);
+        saveThing(f1);
+        saveThing(f2);
+        saveThing(f3);
     }, function (eiacs) {
+
         $("#viewExpandedLinkedDataProductsFeedback").text(eiacs.length + " results found.")
     }, console.log);
 
@@ -178,12 +269,6 @@ $("#convertProductDataButton").click(function (evt) {
             f3 = new EcFramework();
             f3.assignId(repo2.selectedServer, "0a849142-f051-442e-b98b-fbb42e845d11");
             f3.name = "Parts, Tools, and Equipment.";
-        }
-        var f4 = EcFramework.getBlocking(repo2.selectedServer + "data/schema.cassproject.org.0.3.Framework/" + xa.getGuid() + "_LOs");
-        if (f4 == null) {
-            f4 = new EcFramework();
-            f4.assignId(repo2.selectedServer, xa.getGuid() + "_LOs");
-            f4.name = "Learning Objectives for " + f.name;
         }
         repo.searchWithParams(
             "@type:XB_logistics_support_analysis_control_number_indentured_item_data AND end_item_acronym_code:" + xa.end_item_acronym_code, {
@@ -379,7 +464,6 @@ $("#convertProductDataButton").click(function (evt) {
                                                         saveThing(f1);
                                                         saveThing(f2);
                                                         saveThing(f3);
-                                                        saveThing(f4);
                                                     }, error
                                                 );
                                             }, error
