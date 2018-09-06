@@ -10,3 +10,12 @@ $("#rad8").change(function (evt) {
     else
         $("#viewOutputFramework").attr("src", "");
 });
+var to;
+$("#rad1,#rad2,#rad3,#rad4,#rad5,#rad6,#rad7,#rad8,#rad9,#rad10").change(function (evt) {
+    $("#rad1,#rad2,#rad3,#rad4,#rad5,#rad6,#rad7,#rad8,#rad9,#rad10").parent().children("div").children().hide();
+    var me = this;
+    clearTimeout(to);
+    to = setTimeout(function () {
+        $(me).parent().children("div").children().show();
+    }, 1000);
+})
