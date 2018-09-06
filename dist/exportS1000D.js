@@ -42,7 +42,7 @@ function exportSCP(f) {
     xml += "	<identAndStatusSection>\n";
     xml += "		<scormContentPackageAddress>\n";
     xml += "			<scormContentPackageIdent>\n";
-    xml += '				<scormContentPackageCode modelIdentCode="' + f.getName() + '" scormContentPackageIssuer="00000" scormContentPackageNumber="00000" scormContentPackageVolume="00"></scormContentPackageCode>\n';
+    xml += '				<scormContentPackageCode modelIdentCode="' + f.getName().replace(/ /g, "").substring(0, 14) + '" scormContentPackageIssuer="00000" scormContentPackageNumber="00000" scormContentPackageVolume="00"></scormContentPackageCode>\n';
     xml += '				<language languageIsoCode="en" countryIsoCode="US"></language>\n';
     xml += '				<issueInfo issueNumber="000" inWork="00"></issueInfo>\n';
     xml += "			</scormContentPackageIdent>\n";
@@ -71,9 +71,11 @@ function exportSCP(f) {
     xml += "				<lom:title>\n";
     xml += "					<lom:string>" + f.getName() + "</lom:string>\n";
     xml += "				</lom:title>\n";
-    xml += "				<lom:description>\n";
-    xml += "					<lom:string>" + f.getDescription() + "</lom:string>\n";
-    xml += "				</lom:description>\n";
+    if (f.getDescription() != null) {
+        xml += "				<lom:description>\n";
+        xml += "					<lom:string>" + f.getDescription() + "</lom:string>\n";
+        xml += "				</lom:description>\n";
+    }
     xml += "				<lom:language>EN-US</lom:language>\n";
     xml += "			</lom:general>\n";
     xml += "			<lom:lifeCycle>\n";
@@ -122,6 +124,7 @@ function exportSCP(f) {
     }
     xml += "	</content>\n";
     xml += "</scormContentPackage>\n";
+    xml = xml.replace(/&/g, "&amp;");
     console.log(xml);
     return xml;
 }
@@ -135,12 +138,16 @@ var exportSCPTree = function (cId, c, flat, omitEntry) {
     xml += "			<scoEntryItem>\n";
     xml += "				<lom:lom>\n";
     xml += "					<lom:general>\n";
-    xml += "						<lom:title>\n";
-    xml += "							<lom:string>" + competency.getName() + "</lom:string>\n";
-    xml += "						</lom:title>\n";
-    xml += "						<lom:description>\n";
-    xml += "							<lom:string>" + competency.getDescription() + "</lom:string>\n";
-    xml += "						</lom:description>\n";
+    if (competency.getName() != null) {
+        xml += "						<lom:title>\n";
+        xml += "							<lom:string>" + competency.getName() + "</lom:string>\n";
+        xml += "						</lom:title>\n";
+    }
+    if (competency.getDescription() != null) {
+        xml += "						<lom:description>\n";
+        xml += "							<lom:string>" + competency.getDescription() + "</lom:string>\n";
+        xml += "						</lom:description>\n";
+    }
     xml += "						<lom:language>EN-US</lom:language>\n";
     xml += "					</lom:general>\n";
     xml += "				</lom:lom>\n";
