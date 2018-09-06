@@ -185,24 +185,26 @@ $("#convertProductDataButton").click(function (evt) {
                                     f.addCompetency(cx.shortId());
                                     f1.addCompetency(cx.shortId());
                                     saveThing(cx);
-                                    EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromTaskS3000L?url=", taskRev.shortId(), function (tlo) {
-                                        var lo = new EcCompetency();
-                                        lo.assignId(repo2.selectedServer, taskRef.getGuid() + "_TLO");
-                                        lo.name = tlo;
-                                        lo["dcterms:type"] = "TLO";
-                                        lo["ceasn:derivedFrom"] = taskRef.id;
+                                    try {
+                                        EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromTaskS3000L?url=", taskRev.shortId(), function (tlo) {
+                                            var lo = new EcCompetency();
+                                            lo.assignId(repo2.selectedServer, taskRef.getGuid() + "_TLO");
+                                            lo.name = tlo;
+                                            lo["dcterms:type"] = "TLO";
+                                            lo["ceasn:derivedFrom"] = taskRef.id;
 
-                                        var xbAlignment = new EcAlignment();
-                                        xbAlignment.assignId(repo2.selectedServer, lo.getGuid() + "_" + Relation.NARROWS + "_" + cx.getGuid());
-                                        xbAlignment.relationType = Relation.NARROWS;
-                                        xbAlignment.source = lo.shortId();
-                                        xbAlignment.target = cx.shortId();
-                                        f.addRelation(xbAlignment.shortId());
-                                        saveThing(xbAlignment);
+                                            var xbAlignment = new EcAlignment();
+                                            xbAlignment.assignId(repo2.selectedServer, lo.getGuid() + "_" + Relation.NARROWS + "_" + cx.getGuid());
+                                            xbAlignment.relationType = Relation.NARROWS;
+                                            xbAlignment.source = lo.shortId();
+                                            xbAlignment.target = cx.shortId();
+                                            f.addRelation(xbAlignment.shortId());
+                                            saveThing(xbAlignment);
 
-                                        f.addCompetency(lo.id);
-                                        saveThing(lo);
-                                    }, error);
+                                            f.addCompetency(lo.id);
+                                            saveThing(lo);
+                                        }, error);
+                                    } catch (ex) {}
                                     var xbAlignment = new EcAlignment();
                                     xbAlignment.assignId(repo2.selectedServer, cx.getGuid() + "_" + Relation.NARROWS + "_" + c.getGuid());
                                     xbAlignment.relationType = Relation.NARROWS;

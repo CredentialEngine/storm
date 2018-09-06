@@ -1,6 +1,6 @@
 function importS3000L(data) {
     var repo = new EcRepository();
-    repo.selectedServer = "http://10.1.123.190:8080/api/";
+    repo.selectedServer = $("#selectedServer :selected").val();
 
     var pks = {};
 
