@@ -25,10 +25,101 @@ $("#exportS1000DSelect").change(function (evt) {
         ary = ary.concat(f.competency);
         ary = ary.concat(f.relation);
         repo.precache(ary, function (results) {
-            $("#exportS1000DIframe").text(exportSCP(f));
+            $("#exportS1000DSelectOutput").html("");
+            var option =
+                $("#exportS1000DSelectOutput").append("<option/>").children().last();
+            option.attr("value", exportLearning(f));
+            option.text("Learning.xml");
+            option = $("#exportS1000DSelectOutput").append("<option/>").children().last();
+            option.attr("value", exportSCP(f));
+            option.text("Scorm Content Package.xml");
+            for (var competencyId in f.competency) {
+                var c = EcCompetency.getBlocking(f.competency[competencyId]);
+                if (c["dcterms:type"] != "TLO")
+                    continue;
+                option = $("#exportS1000DSelectOutput").append("<option/>").children().last();
+                option.attr("value", exportSco(c));
+                option.text(c.getGuid() + ".xml");
+            }
         });
     }, console.error);
 });
+
+$("#exportS1000DSelectOutput").change(function (evt) {
+    $("#exportS1000DIframe").text($("#exportS1000DSelectOutput :selected").attr("value"));
+
+});
+
+function exportSco(c) {
+    var xml = "";
+    xml += '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE scormContentPackage>\n';
+    xml += '<scoContent xmlns:dc="http://www.purl.org/dc/elements/1.1/"\n';
+    xml += '	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n';
+    xml += '	xmlns:lom="http://ltsc.ieee.org/xsd/LOM"\n';
+    xml += '	xmlns:xlink="http://www.w3.org/1999/xlink"\n';
+    xml += '	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+    xml += '	xsi:noNamespaceSchemaLocation="http://www.s1000d.org/S1000D_4-2/xml_schema_flat/scocontent.xsd">\n';
+    xml += '	<contentDescription>\n';
+    xml += '		<simplePara>' + c.getName() + '</simplePara>\n';
+    xml += '	</contentDescription>\n';
+    xml += '	<trainingStep>\n';
+    xml += '		<contentDescription>\n';
+    xml += '			<simplePara>' + c.getName() + '</simplePara>\n';
+    xml += '		</contentDescription>\n';
+    xml += '		<dmRef>\n';
+    xml += '			<dmRefIdent>\n';
+    xml += '				<dmCode modelIdentCode="00" systemDiffCode="0" systemCode="850" subSystemCode="0" subSubSystemCode="0" assyCode="00" disassyCode="00" disassyCodeVariant="0" infoCode="000" infoCodeVariant="0" itemLocationCode="T"></dmCode>\n';
+    xml += '			</dmRefIdent>\n';
+    xml += '		</dmRef>\n';
+    xml += '	</trainingStep>\n';
+    xml += '</scoContent>\n';
+    return xml.replace(/&/g, "&amp;");;
+}
+
+function exportLearning(f) {
+    var xml = "";
+    xml += '<?xml version="1.0" encoding="utf-8"?><!DOCTYPE scormContentPackage>\n';
+    xml += '<learning xmlns:dc="http://www.purl.org/dc/elements/1.1/"\n';
+    xml += '	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n';
+    xml += '	xmlns:lom="http://ltsc.ieee.org/xsd/LOM"\n';
+    xml += '	xmlns:xlink="http://www.w3.org/1999/xlink"\n';
+    xml += '	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n';
+    xml += '	xsi:noNamespaceSchemaLocation="http://www.s1000d.org/S1000D_4-2/xml_schema_flat/learning.xsd">\n';
+    xml += '	<learningPlan>\n';
+    xml += '		<lcInterventionDefinition>\n';
+    xml += '			<lcLearningObjectives>\n';
+    xml += '				<lcObjectiveItemGroup>\n';
+    xml += '					<title>TLOs</title>\n';
+
+    for (var competencyId in f.competency) {
+        var c = EcCompetency.getBlocking(f.competency[competencyId]);
+        if (c["dcterms:type"] == "TLO") {
+            xml += '					<lcObjectiveItem>\n';
+            xml += '						<title>' + c.getName() + '</title>\n';
+            if (c.getDescription() != null) {
+                xml += '						<description>\n';
+                xml += '							<para>' + c.getDescription() + '</para>\n';
+                xml += '						</description>\n';
+            }
+            //  xml += '						<lcObjectiveItemGroup>';
+            //  xml += '							<title>ELOs</title>';
+            //  xml += '							<lcObjectiveItem>';
+            //  xml += '								<title>$ceasn:competencyText</title>';
+            //  xml += '								<description>';
+            //  xml += '									<para>$ceasn:comment</para>';
+            //  xml += '								</description>';
+            //  xml += '							</lcObjectiveItem>';
+            //  xml += '						</lcObjectiveItemGroup>';
+            xml += '					</lcObjectiveItem>\n';
+        }
+    }
+    xml += '				</lcObjectiveItemGroup>\n';
+    xml += '			</lcLearningObjectives>\n';
+    xml += '		</lcInterventionDefinition>\n';
+    xml += '	</learningPlan>\n';
+    xml += '</learning>\n';
+    return xml.replace(/&/g, "&amp;");;
+}
 
 function exportSCP(f) {
     var xml = "";
