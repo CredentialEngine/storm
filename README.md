@@ -18,16 +18,15 @@ The relevant data is viewable. `js/viewLinkedData.js`
 Next, the product data is enriched. In particular:
 
 * Encoded terms and meanings are decoded into human interprable phrases using the specifications. `js/importDefinitionsAndTerms.js`
-* (Future) Complex interactions
+* (Future) Complex interactions with other product data objects are turned into interprable phrases.
 
 The enriched product data is viewable. `js/viewExpandedLinkedData.js`
 
-Next, the product data is translated into two competency frameworks.
-
-`js/convertProductDataToCompetencies.js`
+Next, the product data is translated into two competency frameworks. `js/convertProductDataToCompetencies.js`
 
 The competency frameworks are viewable. `js/viewOutputFramework.js`
 
-Next, 
+The competency frameworks are exportable to CTDL-ASN. `js/viewCtdlasn.js`
 
-#
+Next, frameworks can be exported to S1000D. `js/exportS1000D.js`
+
