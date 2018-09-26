@@ -11,8 +11,8 @@
 
 <body>
     <select id="selectedServer" style="float:left;">
-        <option disabled selected value="http://nowhere/">Select Server</option>
-        <option value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
+        <option disabled value="http://nowhere/">Select Server</option>
+        <option selected value="http://staging.credentialengine.org:8080/api/">CE Staging</option>
         <option value="http://localhost/api/">Localhost</option>
         <option value="http://localhost:8080/api/">Localhost 8080</option>
         <option value="http://10.1.123.190/api/">Local Server</option>
@@ -192,7 +192,7 @@
                     <p>In this step, we can view the CTDL/ASN framework.</p>
                     <button id="viewCtdlasnSearch">Search for Products</button>
                     <hr>
-                    <div id="viewCtdlasnQrCodeCanvas" style="display:none;float:right;width:192px;height:192px;margin-right:10px;"></div>
+
                     <h2>Products</h2>
                     <select id="viewCtdlasn">
                         <option selected disabled>Select</option>
