@@ -1,5 +1,5 @@
+//Create Import Worker
 var importWorker;
-
 if (typeof (Worker) !== "undefined") {
     if (typeof (importWorker) == "undefined") {
         importWorker = new Worker("dist/importWorker.js");
