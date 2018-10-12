@@ -1,5 +1,5 @@
 # storm
-"If I were an algorithm..." -- CRADA Team Motto````
+"If I were an algorithm..." -- CRADA Team Motto
 
 Product Data to S1000D via CTDL-ASN / CASS
 
