@@ -127,10 +127,10 @@ $("#convertProductDataButton").click(function (evt) {
 
     repo.search("@type:Product", function (xa) {
         var f = new EcFramework();
-        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_TLOS");
+        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_PO");
         f["ceasn:derivedFrom"] = xa.id;
         f["ceasn:codedNotation"] = xa.getGuid();
-        f.name = xa.name[0].descr[0] + " Task, TLO, and Component Breakdown";
+        f.name = xa.name[0].descr[0] + " Task, Performance Objectives, and Component Breakdown";
         var f1 = new EcFramework();
         f1.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS");
         f1["ceasn:derivedFrom"] = xa.id;
@@ -188,9 +188,9 @@ $("#convertProductDataButton").click(function (evt) {
                                     try {
                                         EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromTaskS3000L?url=", taskRev.shortId(), function (tlo) {
                                             var lo = new EcCompetency();
-                                            lo.assignId(repo2.selectedServer, taskRef.getGuid() + "_TLO");
+                                            lo.assignId(repo2.selectedServer, taskRef.getGuid() + "_PO");
                                             lo.name = tlo;
-                                            lo["dcterms:type"] = "TLO";
+                                            lo["dcterms:type"] = "PO";
                                             lo["ceasn:derivedFrom"] = taskRef.id;
 
                                             var xbAlignment = new EcAlignment();
@@ -265,11 +265,11 @@ $("#convertProductDataButton").click(function (evt) {
     console.log("Searching for XA.");
     repo.search("@type:XA_end_item_acronym_code_data", function (xa) {
         var f = new EcFramework();
-        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_TLOS");
+        f.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS_PO");
         lookup["XA_" + xa.getGuid()] = f;
         f["ceasn:derivedFrom"] = xa.id;
         f["ceasn:codedNotation"] = xa.getGuid();
-        f.name = xa.end_item_acronym_code + " Task, TLO, and Component Breakdown";
+        f.name = xa.end_item_acronym_code + " Task, Performance Objective, and Component Breakdown";
         var f1 = new EcFramework();
         f1.assignId(repo2.selectedServer, xa.getGuid() + "_TASKS");
         f1["ceasn:derivedFrom"] = xa.id;
@@ -348,9 +348,9 @@ $("#convertProductDataButton").click(function (evt) {
 
                         EcRemote.getExpectingString("http://localhost:9722/api/custom/tloFromCa?url=", ca.shortId(), function (tlo) {
                             var lo = new EcCompetency();
-                            lo.assignId(repo2.selectedServer, cac.getGuid() + "_TLO");
+                            lo.assignId(repo2.selectedServer, cac.getGuid() + "_PO");
                             lo.name = tlo;
-                            lo["dcterms:type"] = "TLO";
+                            lo["dcterms:type"] = "PO";
                             lo["ceasn:derivedFrom"] = ca.id;
 
                             var xbAlignment = new EcAlignment();
